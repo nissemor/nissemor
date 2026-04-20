@@ -637,8 +637,8 @@ footer .copy { font-size: .73rem; margin-top: 24px; color: rgba(200,168,188,.4);
         <input type="text" name="names" placeholder="e.g. Sofia, Abuela Rosa, little Mateo…" required/>
       </div>
       <div class="form-row">
-        <label>Referral Code <span>· Código de Referido (optional · opcional)</span></label>
-        <input type="text" name="referral_code" placeholder="Enter referral code if you have one · Ingresa tu código si tienes uno" id="referral-input"/>
+        <label>Discount or Referral Code <span>· Código de Descuento o Referido (optional · opcional)</span></label>
+        <input type="text" name="referral_code" placeholder="Try MOM50, FIRSTSONG15, REFERRAL20, or WELCOME5 · Prueba MOM50, FIRSTSONG15, REFERRAL20 o WELCOME5" id="referral-input"/>
         <p id="referral-msg" style="font-size:.78rem; margin-top:6px; display:none;"></p>
       </div>
       <div class="form-row">
@@ -1100,16 +1100,16 @@ function seekDemo(audioId, progressId, event) {
   <div style="max-width:480px; width:100%; background:linear-gradient(160deg,#1e0a28,#0d0b0f); border:1px solid rgba(224,96,160,.4); border-radius:24px; padding:48px 36px; text-align:center; position:relative; box-shadow:0 0 60px rgba(224,96,160,.2);">
     <button onclick="closeNewsletter()" style="position:absolute; top:14px; right:18px; background:none; border:none; color:rgba(200,168,188,.5); font-size:1.3rem; cursor:pointer;">✕</button>
     <div style="font-size:2.5rem; margin-bottom:14px;">🎶</div>
-    <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.9rem; color:#fff; margin-bottom:8px; line-height:1.2;">Get <em style="color:#e060a0;">$5 OFF</em> your first song</h3>
+    <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.9rem; color:#fff; margin-bottom:8px; line-height:1.2;">Get <em style="color:#e060a0;">15% OFF</em> your first song</h3>
     <p style="font-family:'Cormorant Garamond',serif; font-style:italic; color:#f4a0cc; font-size:1.05rem; margin-bottom:16px;">$5 de descuento en tu primera canción</p>
     <p style="color:rgba(200,168,188,.75); font-size:.87rem; line-height:1.7; margin-bottom:24px;">
-      Join our list and be the first to receive exclusive discounts, new packages & special offers.<br/>
+      Join our list and be the first to receive exclusive discounts, new packages & special offers. Use code <strong>FIRSTSONG15</strong> for your first order.<br/>
       <em style="font-size:.82em; color:rgba(200,168,188,.55);">Únete a nuestra lista y recibe descuentos exclusivos, nuevos paquetes y ofertas especiales.</em>
     </p>
     <form id="mc-popup-form" style="display:flex; flex-direction:column; gap:12px;">
       <input type="text" id="mc-fname" placeholder="Your first name · Tu nombre" style="width:100%; background:rgba(255,255,255,.06); border:1px solid rgba(224,96,160,.25); border-radius:10px; padding:13px 16px; color:#fff; font-family:'Jost',sans-serif; font-size:.9rem; outline:none;"/>
       <input type="email" id="mc-email" placeholder="your@email.com" required style="width:100%; background:rgba(255,255,255,.06); border:1px solid rgba(224,96,160,.25); border-radius:10px; padding:13px 16px; color:#fff; font-family:'Jost',sans-serif; font-size:.9rem; outline:none;"/>
-      <button type="submit" class="btn-primary" style="padding:15px; font-size:.85rem;">✦ Claim My $5 Discount · Obtener $5 de Descuento</button>
+      <button type="submit" class="btn-primary" style="padding:15px; font-size:.85rem;">✦ Claim My 15% Discount · Obtener 15% de Descuento</button>
     </form>
     <p id="mc-popup-msg" style="display:none; margin-top:14px; font-size:.85rem; line-height:1.6;"></p>
     <p style="font-size:.72rem; color:rgba(200,168,188,.35); margin-top:14px;">No spam. Unsubscribe anytime. · Sin spam. Cancela cuando quieras.</p>
@@ -1164,7 +1164,7 @@ document.getElementById("mc-popup-form").addEventListener("submit", async functi
   const btn = this.querySelector("button");
   btn.textContent = "Subscribing…"; btn.disabled = true;
   // Use Mailchimp embed approach via hidden form
-  mcSubscribe(email, fname, "mc-popup-msg", btn, "✦ Claim My $5 Discount · Obtener $5 de Descuento");
+  mcSubscribe(email, fname, "mc-popup-msg", btn, "✦ Claim My 15% Discount · Obtener 15% de Descuento");
 });
 
 // Banner form
@@ -1189,7 +1189,7 @@ async function mcSubscribe(email, fname, msgId, btn, btnText) {
         email: email,
         name: fname || "Friend",
         _subject: "🎶 Welcome to Nisse Mor! Your $5 discount is here",
-        message: "Hi " + (fname || "there") + "! 💕 Thank you for joining the Nisse Mor family! Use code WELCOME5 at checkout for $5 OFF your first personalized song. We cannot wait to create something beautiful just for you. Con amor, Denisse · Nisse Mor · info@nissemor.com · nissemor.com"
+        message: "Hi " + (fname || "there") + "! 💕 Thank you for joining the Nisse Mor family! Use code FIRSTSONG15 at checkout for 15% OFF your first personalized song. We cannot wait to create something beautiful just for you. Con amor, Denisse · Nisse Mor · info@nissemor.com · nissemor.com"
       })
     });
 
@@ -1209,7 +1209,7 @@ async function mcSubscribe(email, fname, msgId, btn, btnText) {
     // 3. Show success
     msg.style.display = "block";
     msg.style.color = "#25d366";
-    msg.innerHTML = "🎶 You're in! Check your email for your <strong>WELCOME5</strong> code.<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>WELCOME5</strong>.</em>";
+    msg.innerHTML = "🎶 You're in! Check your email for your <strong>FIRSTSONG15</strong> code.<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>FIRSTSONG15</strong>.</em>";
     btn.textContent = "✔ Subscribed!";
     btn.style.background = "rgba(37,211,102,.2)";
     btn.style.boxShadow = "none";
@@ -1329,9 +1329,27 @@ const PRICES = {
   "Family Story / Historia de Familia – $89 ✦": 89,
   "Forever Gift / Regalo Eterno – $149": 149
 };
-const DISCOUNT_CODES = { "WELCOME5": 5, "AMIGA5": 5, "REFERRAL10": 10 };
+const DISCOUNT_CODES = {
+  "MOM50": { type: "percent", value: 50, label: "50% OFF" },
+  "FIRSTSONG15": { type: "percent", value: 15, label: "15% OFF" },
+  "REFERRAL20": { type: "fixed", value: 20, label: "$20 OFF" },
+  "WELCOME5": { type: "fixed", value: 5, label: "$5 OFF" }
+};
 let currentPrice = 0;
 let discountAmount = 0;
+
+function getDiscountDetails(code, basePrice) {
+  const promo = DISCOUNT_CODES[code];
+  if (!promo || !basePrice) return { amount: 0, label: "" };
+  const amount = promo.type === "percent"
+    ? Math.round(basePrice * (promo.value / 100) * 100) / 100
+    : promo.value;
+  return { amount, label: promo.label };
+}
+
+function formatMoney(amount) {
+  return Number.isInteger(amount) ? String(amount) : amount.toFixed(2);
+}
 
 function updatePriceSummary() {
   const packageSelect = document.querySelector('select[name="package"]');
@@ -1345,20 +1363,22 @@ function updatePriceSummary() {
   const pkg = packageSelect.value;
   const basePrice = PRICES[pkg] || 0;
   const code = referralInput ? referralInput.value.trim().toUpperCase() : "";
-  discountAmount = DISCOUNT_CODES[code] || 0;
+  const promo = getDiscountDetails(code, basePrice);
+  discountAmount = promo.amount;
   currentPrice = basePrice > 0 ? Math.max(0, basePrice - discountAmount) : 0;
   if (basePrice > 0) {
     priceLabel.textContent = pkg.split("–")[0].trim();
-    priceFinal.textContent = "$" + currentPrice;
+    priceFinal.textContent = "$" + formatMoney(currentPrice);
     if (discountAmount > 0) {
       priceOriginal.style.display = "block";
-      priceOriginal.textContent = "$" + basePrice;
+      priceOriginal.textContent = "$" + formatMoney(basePrice);
       discountLabel.style.display = "block";
+      discountLabel.textContent = "✔ " + promo.label + " applied · " + promo.label + " aplicado";
     } else {
       priceOriginal.style.display = "none";
       discountLabel.style.display = "none";
     }
-    if (stripeBtnText) stripeBtnText.textContent = "Pay $" + currentPrice + " securely · Pagar $" + currentPrice;
+    if (stripeBtnText) stripeBtnText.textContent = "Pay $" + formatMoney(currentPrice) + " securely · Pagar $" + formatMoney(currentPrice);
   } else {
     priceLabel.textContent = "Select a package above · Selecciona un paquete arriba";
     priceFinal.textContent = "—";
@@ -1401,8 +1421,15 @@ function openStripeCheckout() {
   sessionStorage.setItem("nm_order_pkg", pkg);
   
   var url = LINKS[pkg];
-  // Add success redirect back to nissemor.com with payment confirmation
-  url = url + "?prefilled_email=" + encodeURIComponent(email) + "&success_url=" + encodeURIComponent("https://nissemor.com?paid=1");
+  var referralInput = document.getElementById("referral-input");
+  var promoCode = referralInput ? referralInput.value.trim().toUpperCase() : "";
+  var params = new URLSearchParams();
+  params.set("prefilled_email", email);
+  params.set("success_url", "https://nissemor.com?paid=1");
+  if (DISCOUNT_CODES[promoCode]) {
+    params.set("prefilled_promo_code", promoCode);
+  }
+  url = url + "?" + params.toString();
   window.open(url, "_blank");
   
   // After opening Stripe, show a "waiting for payment" message
@@ -1457,8 +1484,12 @@ document.addEventListener("input", function(e) {
   }
   msg.style.display = "block";
   if (DISCOUNT_CODES[code]) {
+    const promo = DISCOUNT_CODES[code];
+    const promoText = promo.type === "percent"
+      ? promo.value + "% off"
+      : "$" + promo.value + " off";
     msg.style.color = "#25d366";
-    msg.textContent = "✔ Code valid! $" + DISCOUNT_CODES[code] + " off · ¡Código válido! $" + DISCOUNT_CODES[code] + " de descuento.";
+    msg.textContent = "✔ Code valid! " + promoText + " · ¡Código válido! " + promoText + ".";
   } else {
     msg.style.color = "rgba(200,100,130,.8)";
     msg.textContent = "✗ Invalid code · Código inválido";
