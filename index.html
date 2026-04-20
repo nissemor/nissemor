@@ -724,6 +724,51 @@ window.addEventListener("error", function(e) {
     </div>
   </div>
   <div class="form-wrap" id="order-form-wrap">
+    <!-- Stripe Checkout -->
+    <div id="checkout-box" style="margin-bottom:28px; padding:24px; border:1px solid rgba(224,96,160,.25); border-radius:16px; background:rgba(224,96,160,.04);">
+      <label style="display:block; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:#fff; font-weight:400; margin-bottom:16px;">
+        💳 Secure Checkout · Pago Seguro
+      </label>
+
+      <!-- Price Summary -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding:14px 16px; background:rgba(255,255,255,.04); border-radius:10px; border:1px solid rgba(224,96,160,.15);">
+        <div>
+          <p style="font-size:.8rem; color:var(--muted);" id="price-package-label">Select a package above · Selecciona un paquete</p>
+          <p id="price-discount-label" style="font-size:.75rem; color:#25d366; display:none;">✔ Discount applied · Descuento aplicado</p>
+        </div>
+        <div style="text-align:right;">
+          <p id="price-original" style="font-size:.8rem; color:var(--muted); text-decoration:line-through; display:none;"></p>
+          <p id="price-final" style="font-size:1.5rem; font-family:'Cormorant Garamond',serif; color:var(--pink); font-weight:400;">—</p>
+        </div>
+      </div>
+
+      <!-- Stripe Button -->
+      <button id="stripe-pay-btn" type="button" onclick="openStripeCheckout()" style="display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:16px; border-radius:30px; background:linear-gradient(135deg,#6772e5,#9b59b6); color:#fff; border:none; cursor:pointer; font-family:'Jost',sans-serif; font-size:.9rem; letter-spacing:.08em; font-weight:500; transition:all .3s; box-shadow:0 4px 20px rgba(103,114,229,.4);">
+        🔒 <span id="stripe-btn-text">Step 1: Choose &amp; Pay · Paso 1: Elige y Paga</span>
+      </button>
+      <div style="display:flex; justify-content:center; gap:10px; margin-top:12px; flex-wrap:wrap; align-items:center;">
+        <span style="font-size:.72rem; color:rgba(200,168,188,.5);">Accepts:</span>
+        <span style="font-size:.75rem; color:rgba(200,168,188,.6);">💳 Cards</span>
+        <span style="font-size:.75rem; color:rgba(200,168,188,.6);">🍎 Apple Pay</span>
+        <span style="font-size:.75rem; color:rgba(200,168,188,.6);">G Google Pay</span>
+        <span style="font-size:.75rem; color:rgba(200,168,188,.6);">K Klarna</span>
+        <span style="font-size:.75rem; color:rgba(200,168,188,.6);">✦ Afterpay</span>
+      </div>
+      <p style="font-size:.8rem; color:rgba(200,168,188,.7); text-align:center; margin-top:10px; font-weight:500;">🔒 Secure checkout powered by Stripe · Pago seguro con Stripe</p>
+      <div style="text-align:center; margin-top:10px; padding:10px; background:rgba(224,96,160,.06); border-radius:10px; border:1px solid rgba(224,96,160,.15);">
+        <p style="font-size:.82rem; color:#fff; font-weight:500;">Step 2: Tell us your story · Paso 2: Cuéntanos tu historia</p>
+        <p style="font-size:.75rem; color:var(--muted); margin-top:3px;">Fill the form below after payment · Llena el formulario abajo después del pago</p>
+      </div>
+      
+      <!-- Confirm payment button (hidden until Stripe opens) -->
+      <button id="confirm-payment-btn" type="button" onclick="confirmPaymentDone()" style="display:none; width:100%; margin-top:10px; padding:13px; border-radius:30px; background:rgba(37,211,102,.15); border:1px solid rgba(37,211,102,.4); color:#25d366; font-family:'Jost',sans-serif; font-size:.85rem; cursor:pointer; letter-spacing:.08em;">
+        ✔ I completed my payment · Ya completé mi pago
+      </button>
+    </div>
+
+    <!-- Stripe JS -->
+    <script src="https://js.stripe.com/v3/" crossorigin="anonymous"></script>
+
     <form id="order-form" action="https://formspree.io/f/xjgjrorb" method="POST">
 
       <!-- Hidden subject for email -->
@@ -823,50 +868,7 @@ window.addEventListener("error", function(e) {
         <label>Your Story &amp; Details <span>· Tu Historia y Detalles</span></label>
         <textarea name="story" placeholder="Share memories, inside jokes, favorite things, what makes this person special… / Comparte recuerdos, momentos especiales, lo que hace única a esta persona…" required></textarea>
       </div>
-    <!-- Stripe Checkout -->
-    <div id="checkout-box" style="margin-bottom:28px; padding:24px; border:1px solid rgba(224,96,160,.25); border-radius:16px; background:rgba(224,96,160,.04);">
-      <label style="display:block; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:#fff; font-weight:400; margin-bottom:16px;">
-        💳 Secure Checkout · Pago Seguro
-      </label>
-
-      <!-- Price Summary -->
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding:14px 16px; background:rgba(255,255,255,.04); border-radius:10px; border:1px solid rgba(224,96,160,.15);">
-        <div>
-          <p style="font-size:.8rem; color:var(--muted);" id="price-package-label">Select a package above · Selecciona un paquete</p>
-          <p id="price-discount-label" style="font-size:.75rem; color:#25d366; display:none;">✔ Discount applied · Descuento aplicado</p>
-        </div>
-        <div style="text-align:right;">
-          <p id="price-original" style="font-size:.8rem; color:var(--muted); text-decoration:line-through; display:none;"></p>
-          <p id="price-final" style="font-size:1.5rem; font-family:'Cormorant Garamond',serif; color:var(--pink); font-weight:400;">—</p>
-        </div>
-      </div>
-
-      <!-- Stripe Button -->
-      <button id="stripe-pay-btn" type="button" onclick="openStripeCheckout()" style="display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:16px; border-radius:30px; background:linear-gradient(135deg,#6772e5,#9b59b6); color:#fff; border:none; cursor:pointer; font-family:'Jost',sans-serif; font-size:.9rem; letter-spacing:.08em; font-weight:500; transition:all .3s; box-shadow:0 4px 20px rgba(103,114,229,.4);">
-        🔒 <span id="stripe-btn-text">Step 1: Choose &amp; Pay · Paso 1: Elige y Paga</span>
-      </button>
-      <div style="display:flex; justify-content:center; gap:10px; margin-top:12px; flex-wrap:wrap; align-items:center;">
-        <span style="font-size:.72rem; color:rgba(200,168,188,.5);">Accepts:</span>
-        <span style="font-size:.75rem; color:rgba(200,168,188,.6);">💳 Cards</span>
-        <span style="font-size:.75rem; color:rgba(200,168,188,.6);">🍎 Apple Pay</span>
-        <span style="font-size:.75rem; color:rgba(200,168,188,.6);">G Google Pay</span>
-        <span style="font-size:.75rem; color:rgba(200,168,188,.6);">K Klarna</span>
-        <span style="font-size:.75rem; color:rgba(200,168,188,.6);">✦ Afterpay</span>
-      </div>
-      <p style="font-size:.8rem; color:rgba(200,168,188,.7); text-align:center; margin-top:10px; font-weight:500;">🔒 Secure checkout powered by Stripe · Pago seguro con Stripe</p>
-      <div style="text-align:center; margin-top:10px; padding:10px; background:rgba(224,96,160,.06); border-radius:10px; border:1px solid rgba(224,96,160,.15);">
-        <p style="font-size:.82rem; color:#fff; font-weight:500;">Step 2: Tell us your story · Paso 2: Cuéntanos tu historia</p>
-        <p style="font-size:.75rem; color:var(--muted); margin-top:3px;">Fill the form below after payment · Llena el formulario abajo después del pago</p>
-      </div>
-      
-      <!-- Confirm payment button (hidden until Stripe opens) -->
-      <button id="confirm-payment-btn" type="button" onclick="confirmPaymentDone()" style="display:none; width:100%; margin-top:10px; padding:13px; border-radius:30px; background:rgba(37,211,102,.15); border:1px solid rgba(37,211,102,.4); color:#25d366; font-family:'Jost',sans-serif; font-size:.85rem; cursor:pointer; letter-spacing:.08em;">
-        ✔ I completed my payment · Ya completé mi pago
-      </button>
-    </div>
-
-    <!-- Stripe JS -->
-    <script src="https://js.stripe.com/v3/" crossorigin="anonymous"></script>
+    
 
     <div class="form-row" style="display:flex; gap:12px; align-items:flex-start;">
       <input type="checkbox" id="policy-check" style="width:18px; height:18px; margin-top:3px; flex-shrink:0; accent-color:var(--pink);" />
@@ -875,15 +877,10 @@ window.addEventListener("error", function(e) {
         <em style="color:rgba(200,168,188,.6);">Acepto los <a href="#" onclick="openModal('modal-terms'); return false;" style="color:var(--pink-light);">Términos de Uso</a> y la <a href="#" onclick="openModal('modal-privacy'); return false;" style="color:var(--pink-light);">Política de Privacidad</a>. Las ventas son finales una vez iniciada la producción.</em>
       </label>
     </div>
-      <!-- Payment Required Notice -->
-      <div id="payment-required-notice" style="text-align:center; padding:14px; background:rgba(255,80,80,.08); border:1px solid rgba(255,80,80,.2); border-radius:12px; margin-bottom:12px;">
-        <p style="color:rgba(255,150,150,.9); font-size:.82rem; margin:0;">⚠️ Please complete payment before submitting your order.</p>
-        <p style="color:rgba(255,150,150,.7); font-size:.78rem; font-style:italic; margin:4px 0 0;">Por favor completa el pago antes de enviar tu pedido.</p>
-      </div>
-
       <button type="submit" id="submit-order-btn" class="btn-primary form-submit" disabled style="opacity:.4; cursor:not-allowed;">
-        🔒 Complete Payment First · Completa el Pago Primero
+        🔒 Step 2: Submit Your Story · Paso 2: Enviar Tu Historia
       </button>
+      <p id="payment-required-notice" style="text-align:center; font-size:.78rem; color:rgba(255,150,150,.8); margin-top:8px;">⚠️ Complete payment above first · Completa el pago arriba primero</p>
       <p class="form-note">
         We'll confirm within 24 hours · Confirmamos en 24 horas<br/>
         Questions? / ¿Preguntas? <a href="mailto:info@nissemor.com">info@nissemor.com</a>
@@ -1419,9 +1416,9 @@ window.addEventListener("load", function() {
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
       @nissemor90
     </a>
-    <a href="https://tiktok.com/@nissemor" target="_blank" class="social-btn" style="--sc:#69c9d0;">
+    <a href="https://tiktok.com/@nissemor90" target="_blank" class="social-btn" style="--sc:#69c9d0;">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
-      @nissemor
+      @nissemor90
     </a>
     <a href="https://youtube.com/@nissemor" target="_blank" class="social-btn" style="--sc:#ff0000;">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
@@ -1550,6 +1547,13 @@ document.addEventListener("change", function(e) {
   if (e.target.name === "package" || e.target.id === "referral-input" || e.target.name === "delivery_time") updatePriceSummary();
 });
 document.addEventListener("input", function(e) {
+  if (e.target.name === "package" || e.target.name === "delivery_time") updatePriceSummary();
+});
+// Run on page load
+window.addEventListener("DOMContentLoaded", function() {
+  updatePriceSummary();
+});
+document.addEventListener("input", function(e) {
   if (e.target.id === "referral-input") updatePriceSummary();
 });
 
@@ -1575,7 +1579,11 @@ function openStripeCheckout() {
   var email = document.querySelector('input[name="email"]').value;
   var name = document.querySelector('input[name="name"]').value;
   var delivery = document.querySelector('select[name="delivery_time"]') ? document.querySelector('select[name="delivery_time"]').value : "standard";
-  if (!pkg || !STANDARD[pkg]) { alert("Please select a package first. · Por favor selecciona un paquete primero."); return; }
+  if (!pkg || !STANDARD[pkg]) { 
+    alert("Please select a package above first.\nPor favor selecciona un paquete arriba primero.");
+    document.getElementById("packages").scrollIntoView({behavior:"smooth"});
+    return; 
+  }
   if (!name) { alert("Please enter your name. · Por favor escribe tu nombre."); return; }
   if (!email) { alert("Please enter your email. · Por favor escribe tu correo."); return; }
   var url = delivery === "rush" ? RUSH[pkg] : STANDARD[pkg];
