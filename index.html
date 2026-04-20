@@ -463,8 +463,8 @@ footer .copy { font-size: .73rem; margin-top: 24px; color: rgba(200,168,188,.4);
           <li class="es">Nombres y mensaje especial incluidos</li>
           <li>1 revision round</li>
           <li class="es">1 ronda de revisión</li>
-          <li>Digital delivery in 5–7 days</li>
-          <li class="es">Entrega digital en 5–7 días</li>
+          <li>Digital delivery in 3–5 days</li>
+          <li class="es">Entrega digital en 3–5 días</li>
         </ul>
         <a href="#order" class="btn-primary">Order Now / Pedir Ahora</a>
       </div>
@@ -479,8 +479,8 @@ footer .copy { font-size: .73rem; margin-top: 24px; color: rgba(200,168,188,.4);
           <li class="es">1 canción personalizada (3–4 min)</li>
           <li>Names, story &amp; special memories</li>
           <li class="es">Nombres, historia y recuerdos especiales</li>
-          <li>2 revision rounds</li>
-          <li class="es">2 rondas de revisión</li>
+          <li>3 revision rounds</li>
+          <li class="es">3 rondas de revisión</li>
           <li>MP3 + lyric sheet included</li>
           <li class="es">MP3 + letra de la canción incluida</li>
         </ul>
@@ -493,14 +493,14 @@ footer .copy { font-size: .73rem; margin-top: 24px; color: rgba(200,168,188,.4);
         <h3 class="es">Regalo Eterno</h3>
         <div class="card-price">$149 <span>/ song · canción</span></div>
         <ul>
-          <li>1 premium song (4–5 min)</li>
-          <li class="es">1 canción premium (4–5 min)</li>
+          <li>1 premium song (3–4 min)</li>
+          <li class="es">1 canción premium (3–4 min)</li>
           <li>Full story, names &amp; custom details</li>
           <li class="es">Historia completa, nombres y detalles únicos</li>
           <li>Unlimited revisions</li>
           <li class="es">Revisiones ilimitadas</li>
-          <li>Rush delivery available (3 days)</li>
-          <li class="es">Entrega urgente disponible (3 días)</li>
+          <li>Digital delivery in 3–5 days</li>
+          <li class="es">Entrega digital en 3–5 días</li>
           <li>MP3 + lyrics + video slideshow</li>
           <li class="es">MP3 + letra + video con fotos</li>
         </ul>
@@ -633,6 +633,14 @@ footer .copy { font-size: .73rem; margin-top: 24px; color: rgba(200,168,188,.4);
       <div class="form-row">
         <label>Occasion <span>· Ocasión</span></label>
         <input type="text" name="occasion" placeholder="Birthday / Cumpleaños · Wedding / Boda · Baby Shower…" required/>
+      </div>
+
+      <div class="form-row">
+        <label>Delivery Time <span>· Tiempo de Entrega</span></label>
+        <select name="delivery_time">
+          <option value="standard">Standard 3–5 days · Estándar 3–5 días (included · incluido)</option>
+          <option value="rush">⚡ Rush 1 day · Urgente 1 día (+$10)</option>
+        </select>
       </div>
       <div class="form-row">
         <label>Names to Include <span>· Nombres a Incluir</span></label>
@@ -789,8 +797,8 @@ footer .copy { font-size: .73rem; margin-top: 24px; color: rgba(200,168,188,.4);
           <span class="faq-arrow">▾</span>
         </button>
         <div class="faq-a">
-          <p>Sweet Melody & Family Story: 5–7 business days. Forever Gift with rush: 3 business days.</p>
-          <p class="es">Melodía Dulce & Historia de Familia: 5–7 días hábiles. Regalo Eterno con urgente: 3 días hábiles.</p>
+          <p>Sweet Melody & Family Story: 3–5 business days. Forever Gift with rush: 3 business days.</p>
+          <p class="es">Melodía Dulce & Historia de Familia: 3–5 días hábiles. Regalo Eterno con urgente: 3 días hábiles.</p>
         </div>
       </div>
 
@@ -1393,7 +1401,11 @@ function updatePriceSummary() {
       priceOriginal.style.display = "none";
       discountLabel.style.display = "none";
     }
-    if (stripeBtnText) stripeBtnText.textContent = "Pay $" + currentPrice + " securely · Pagar $" + currentPrice;
+    const deliveryEl = document.querySelector('select[name="delivery_time"]');
+  const isRush = deliveryEl && deliveryEl.value === "rush";
+  const rushExtra = isRush ? 10 : 0;
+  const displayPrice = currentPrice + rushExtra;
+  if (stripeBtnText) stripeBtnText.textContent = "Pay $" + displayPrice + (isRush ? " ⚡ Rush" : "") + " securely · Pagar $" + displayPrice;
   } else {
     priceLabel.textContent = "Select a package above · Selecciona un paquete arriba";
     priceFinal.textContent = "—";
@@ -1404,7 +1416,7 @@ function updatePriceSummary() {
 }
 
 document.addEventListener("change", function(e) {
-  if (e.target.name === "package" || e.target.id === "referral-input") updatePriceSummary();
+  if (e.target.name === "package" || e.target.id === "referral-input" || e.target.name === "delivery_time") updatePriceSummary();
 });
 document.addEventListener("input", function(e) {
   if (e.target.id === "referral-input") updatePriceSummary();
