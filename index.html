@@ -724,51 +724,6 @@ window.addEventListener("error", function(e) {
     </div>
   </div>
   <div class="form-wrap" id="order-form-wrap">
-    <!-- Stripe Checkout -->
-    <div id="checkout-box" style="margin-bottom:28px; padding:24px; border:1px solid rgba(224,96,160,.25); border-radius:16px; background:rgba(224,96,160,.04);">
-      <label style="display:block; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:#fff; font-weight:400; margin-bottom:16px;">
-        💳 Secure Checkout · Pago Seguro
-      </label>
-
-      <!-- Price Summary -->
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding:14px 16px; background:rgba(255,255,255,.04); border-radius:10px; border:1px solid rgba(224,96,160,.15);">
-        <div>
-          <p style="font-size:.8rem; color:var(--muted);" id="price-package-label">Select a package above · Selecciona un paquete</p>
-          <p id="price-discount-label" style="font-size:.75rem; color:#25d366; display:none;">✔ Discount applied · Descuento aplicado</p>
-        </div>
-        <div style="text-align:right;">
-          <p id="price-original" style="font-size:.8rem; color:var(--muted); text-decoration:line-through; display:none;"></p>
-          <p id="price-final" style="font-size:1.5rem; font-family:'Cormorant Garamond',serif; color:var(--pink); font-weight:400;">—</p>
-        </div>
-      </div>
-
-      <!-- Stripe Button -->
-      <button id="stripe-pay-btn" type="button" onclick="openStripeCheckout()" style="display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:16px; border-radius:30px; background:linear-gradient(135deg,#6772e5,#9b59b6); color:#fff; border:none; cursor:pointer; font-family:'Jost',sans-serif; font-size:.9rem; letter-spacing:.08em; font-weight:500; transition:all .3s; box-shadow:0 4px 20px rgba(103,114,229,.4);">
-        🔒 <span id="stripe-btn-text">Step 1: Choose &amp; Pay · Paso 1: Elige y Paga</span>
-      </button>
-      <div style="display:flex; justify-content:center; gap:10px; margin-top:12px; flex-wrap:wrap; align-items:center;">
-        <span style="font-size:.72rem; color:rgba(200,168,188,.5);">Accepts:</span>
-        <span style="font-size:.75rem; color:rgba(200,168,188,.6);">💳 Cards</span>
-        <span style="font-size:.75rem; color:rgba(200,168,188,.6);">🍎 Apple Pay</span>
-        <span style="font-size:.75rem; color:rgba(200,168,188,.6);">G Google Pay</span>
-        <span style="font-size:.75rem; color:rgba(200,168,188,.6);">K Klarna</span>
-        <span style="font-size:.75rem; color:rgba(200,168,188,.6);">✦ Afterpay</span>
-      </div>
-      <p style="font-size:.8rem; color:rgba(200,168,188,.7); text-align:center; margin-top:10px; font-weight:500;">🔒 Secure checkout powered by Stripe · Pago seguro con Stripe</p>
-      <div style="text-align:center; margin-top:10px; padding:10px; background:rgba(224,96,160,.06); border-radius:10px; border:1px solid rgba(224,96,160,.15);">
-        <p style="font-size:.82rem; color:#fff; font-weight:500;">Step 2: Tell us your story · Paso 2: Cuéntanos tu historia</p>
-        <p style="font-size:.75rem; color:var(--muted); margin-top:3px;">Fill the form below after payment · Llena el formulario abajo después del pago</p>
-      </div>
-      
-      <!-- Confirm payment button (hidden until Stripe opens) -->
-      <button id="confirm-payment-btn" type="button" onclick="confirmPaymentDone()" style="display:none; width:100%; margin-top:10px; padding:13px; border-radius:30px; background:rgba(37,211,102,.15); border:1px solid rgba(37,211,102,.4); color:#25d366; font-family:'Jost',sans-serif; font-size:.85rem; cursor:pointer; letter-spacing:.08em;">
-        ✔ I completed my payment · Ya completé mi pago
-      </button>
-    </div>
-
-    <!-- Stripe JS -->
-    <script src="https://js.stripe.com/v3/" crossorigin="anonymous"></script>
-
     <form id="order-form" action="https://formspree.io/f/xjgjrorb" method="POST">
 
       <!-- Hidden subject for email -->
@@ -868,9 +823,39 @@ window.addEventListener("error", function(e) {
         <label>Your Story &amp; Details <span>· Tu Historia y Detalles</span></label>
         <textarea name="story" placeholder="Share memories, inside jokes, favorite things, what makes this person special… / Comparte recuerdos, momentos especiales, lo que hace única a esta persona…" required></textarea>
       </div>
-    
 
-    <div class="form-row" style="display:flex; gap:12px; align-items:flex-start;">
+      <!-- Payment Section -->
+      <div id="checkout-box" style="margin-bottom:28px; padding:24px; border:1px solid rgba(224,96,160,.25); border-radius:16px; background:rgba(224,96,160,.04);">
+        <label style="display:block; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:#fff; font-weight:400; margin-bottom:16px;">
+          💳 Step 1: Pay · Paso 1: Pagar
+        </label>
+
+        <!-- Price Summary -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding:14px 16px; background:rgba(255,255,255,.04); border-radius:10px; border:1px solid rgba(224,96,160,.15);">
+          <div>
+            <p style="font-size:.8rem; color:var(--muted);" id="price-package-label">Select a package above · Selecciona un paquete arriba</p>
+            <p id="price-discount-label" style="font-size:.75rem; color:#25d366; display:none;">✔ Discount applied · Descuento aplicado</p>
+          </div>
+          <div style="text-align:right;">
+            <p id="price-original" style="font-size:.8rem; color:var(--muted); text-decoration:line-through; display:none;"></p>
+            <p id="price-final" style="font-size:1.5rem; font-family:'Cormorant Garamond',serif; color:var(--pink); font-weight:400;">—</p>
+          </div>
+        </div>
+
+        <!-- Pay Button -->
+        <button id="stripe-pay-btn" type="button" onclick="openStripeCheckout()" style="display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:16px; border-radius:30px; background:linear-gradient(135deg,#6772e5,#9b59b6); color:#fff; border:none; cursor:pointer; font-family:'Jost',sans-serif; font-size:.9rem; letter-spacing:.08em; font-weight:500; box-shadow:0 4px 20px rgba(103,114,229,.4);">
+          🔒 <span id="stripe-btn-text">Pay Now · Pagar Ahora</span>
+        </button>
+
+        <p style="font-size:.75rem; color:rgba(200,168,188,.5); text-align:center; margin-top:8px;">Cards • Apple Pay • Google Pay • Klarna • Afterpay · 🔒 Stripe</p>
+
+        <!-- After payment confirm -->
+        <button id="confirm-payment-btn" type="button" onclick="confirmPaymentDone()" style="display:none; width:100%; margin-top:10px; padding:13px; border-radius:30px; background:rgba(37,211,102,.15); border:1px solid rgba(37,211,102,.4); color:#25d366; font-family:'Jost',sans-serif; font-size:.85rem; cursor:pointer;">
+          ✔ I completed my payment · Ya completé mi pago
+        </button>
+      </div>
+
+      <div class="form-row" style="display:flex; gap:12px; align-items:flex-start;">
       <input type="checkbox" id="policy-check" style="width:18px; height:18px; margin-top:3px; flex-shrink:0; accent-color:var(--pink);" />
       <label for="policy-check" style="font-size:.8rem; color:var(--muted); text-transform:none; letter-spacing:0; font-weight:300; cursor:pointer; line-height:1.6;">
         I agree to the <a href="#" onclick="openModal('modal-terms'); return false;" style="color:var(--pink);">Terms of Use</a> and <a href="#" onclick="openModal('modal-privacy'); return false;" style="color:var(--pink);">Privacy Policy</a>. All sales are final once production begins.<br/>
@@ -878,9 +863,9 @@ window.addEventListener("error", function(e) {
       </label>
     </div>
       <button type="submit" id="submit-order-btn" class="btn-primary form-submit" disabled style="opacity:.4; cursor:not-allowed;">
-        🔒 Step 2: Submit Your Story · Paso 2: Enviar Tu Historia
+        Step 2: Send My Order · Paso 2: Enviar Mi Pedido
       </button>
-      <p id="payment-required-notice" style="text-align:center; font-size:.78rem; color:rgba(255,150,150,.8); margin-top:8px;">⚠️ Complete payment above first · Completa el pago arriba primero</p>
+      <p id="payment-required-notice" style="text-align:center; font-size:.78rem; color:rgba(255,150,150,.8); margin-top:8px;">⚠️ Please complete payment above first · Por favor completa el pago arriba primero</p>
       <p class="form-note">
         We'll confirm within 24 hours · Confirmamos en 24 horas<br/>
         Questions? / ¿Preguntas? <a href="mailto:info@nissemor.com">info@nissemor.com</a>
