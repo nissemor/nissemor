@@ -1522,6 +1522,23 @@ if (form) {
         headers: { "Accept": "application/json" }
       });
       if (res.ok) {
+        // Send order confirmation email via EmailJS
+        const nameVal = form.querySelector('input[name="name"]')?.value || "";
+        const emailVal = form.querySelector('input[name="email"]')?.value || "";
+        const pkgVal = form.querySelector('select[name="package"]')?.value || "";
+        const occasionVal = form.querySelector('input[name="occasion"]')?.value || "";
+        try {
+          await emailjs.send("service_h8bqqbn", "template_6ezr7yq", {
+            to_email: emailVal,
+            to_name: nameVal,
+            name: nameVal,
+            email: emailVal,
+            package: pkgVal,
+            occasion: occasionVal
+          });
+        } catch(emailErr) {
+          console.log("EmailJS order confirmation error:", emailErr);
+        }
         form.style.display = "none";
         document.getElementById("form-success").style.display = "block";
       } else {
