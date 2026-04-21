@@ -369,16 +369,9 @@ footer .copy { font-size: .73rem; margin-top: 24px; color: rgba(200,168,188,.4);
   #checkout-box { padding:18px 14px; }
 }
 
-/* ── FIXES: checkbox + payment UI ── */
-#policy-check, #stripe-pay-btn, #confirm-payment-btn {
-  pointer-events: auto !important;
-  position: relative;
-  z-index: 50;
-}
-label[for="policy-check"] {
-  cursor: pointer;
-}
-
+#policy-check{cursor:pointer!important;pointer-events:auto!important;position:relative!important;z-index:9999!important;}
+label[for="policy-check"]{cursor:pointer!important;position:relative!important;z-index:9999!important;}
+#checkout-box, #order-form, .form-row { position: relative; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" crossorigin="anonymous"></script>
 <script>try { emailjs.init("NyAIczlrSpx2kYcxu"); } catch(e) { console.log("EmailJS init:", e); }</script>
@@ -867,7 +860,7 @@ window.addEventListener("error", function(e) {
       </div>
 
       <div class="form-row" style="display:flex; gap:12px; align-items:flex-start;">
-      <input type="checkbox" id="policy-check" style="width:22px; height:22px; margin-top:2px; flex-shrink:0; accent-color:var(--pink); position:relative; z-index:50; pointer-events:auto; cursor:pointer;" />
+      <input type="checkbox" id="policy-check" style="width:24px; height:24px; margin-top:2px; flex-shrink:0; accent-color:var(--pink); cursor:pointer; position:relative; z-index:9999; pointer-events:auto;" />
       <label for="policy-check" style="font-size:.8rem; color:var(--muted); text-transform:none; letter-spacing:0; font-weight:300; cursor:pointer; line-height:1.6;">
         I agree to the <a href="#" onclick="openModal('modal-terms'); return false;" style="color:var(--pink);">Terms of Use</a> and <a href="#" onclick="openModal('modal-privacy'); return false;" style="color:var(--pink);">Privacy Policy</a>. All sales are final once production begins.<br/>
         <em style="color:rgba(200,168,188,.6);">Acepto los <a href="#" onclick="openModal('modal-terms'); return false;" style="color:var(--pink-light);">Términos de Uso</a> y la <a href="#" onclick="openModal('modal-privacy'); return false;" style="color:var(--pink-light);">Política de Privacidad</a>. Las ventas son finales una vez iniciada la producción.</em>
@@ -1235,7 +1228,7 @@ function seekDemo(audioId, progressId, event) {
     <form id="mc-popup-form" style="display:flex; flex-direction:column; gap:12px;">
       <input type="text" id="mc-fname" placeholder="Your first name · Tu nombre" style="width:100%; background:#2d0a1f; border:1px solid rgba(224,96,160,.25); border-radius:10px; padding:13px 16px; color:#fff; font-family:'Jost',sans-serif; font-size:.9rem; outline:none;"/>
       <input type="email" id="mc-email" placeholder="your@email.com" required style="width:100%; background:#2d0a1f; border:1px solid rgba(224,96,160,.25); border-radius:10px; padding:13px 16px; color:#fff; font-family:'Jost',sans-serif; font-size:.9rem; outline:none;"/>
-      <button type="submit" class="btn-primary" style="padding:15px; font-size:.85rem;">✦ Get My 15% Discount · Obtener 15% de Descuento</button>
+      <button type="submit" class="btn-primary" style="padding:15px; font-size:.85rem;">✦ Get My $5 Discount · Obtener $5 de Descuento</button>
     </form>
     <p id="mc-popup-msg" style="display:none; margin-top:14px; font-size:.85rem; line-height:1.6;"></p>
     <p style="font-size:.72rem; color:rgba(200,168,188,.35); margin-top:14px;">No spam. Unsubscribe anytime. · Sin spam. Cancela cuando quieras.</p>
@@ -1290,7 +1283,7 @@ document.getElementById("mc-popup-form").addEventListener("submit", async functi
   const btn = this.querySelector("button");
   btn.textContent = "Subscribing…"; btn.disabled = true;
   // Use Mailchimp embed approach via hidden form
-  mcSubscribe(email, fname, "mc-popup-msg", btn, "✦ Get My 15% Discount · Obtener 15% de Descuento");
+  mcSubscribe(email, fname, "mc-popup-msg", btn, "✦ Get My $5 Discount · Obtener $5 de Descuento");
 });
 
 // Banner form
@@ -1331,7 +1324,7 @@ async function mcSubscribe(email, fname, msgId, btn, btnText) {
     // Show success
     msg.style.display = "block";
     msg.style.color = "#25d366";
-    msg.innerHTML = "🎶 You're in! Check your email for your <strong>FIRSTSONG15</strong> 15% discount code!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>FIRSTSONG15</strong> de 15% de descuento.</em>";
+    msg.innerHTML = "🎶 You're in! Check your email for your <strong>FIRSTSONG15</strong> $5 discount code!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>FIRSTSONG15</strong> de 15% de descuento.</em>";
     btn.textContent = "✔ Subscribed!";
     btn.style.background = "rgba(37,211,102,.2)";
     btn.style.boxShadow = "none";
@@ -1366,7 +1359,7 @@ async function mcSubscribe(email, fname, msgId, btn, btnText) {
     // 3. Show success
     msg.style.display = "block";
     msg.style.color = "#25d366";
-    msg.innerHTML = "🎶 You're in! Check your email for your <strong>FIRSTSONG15</strong> 15% discount code!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>FIRSTSONG15</strong> de 15% de descuento.</em>";
+    msg.innerHTML = "🎶 You're in! Check your email for your <strong>FIRSTSONG15</strong> $5 discount code!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>FIRSTSONG15</strong> de 15% de descuento.</em>";
     btn.textContent = "✔ Subscribed!";
     btn.style.background = "rgba(37,211,102,.2)";
     btn.style.boxShadow = "none";
@@ -1488,7 +1481,7 @@ const PRICES = {
   "Family Story / Historia de Familia – $89 ✦": 89,
   "Forever Gift / Regalo Eterno – $149": 149
 };
-const DISCOUNT_CODES = { "WELCOME5": 5, "REFERRAL20": 20, "FIRSTSONG15": 15, "MOM50": 50 };
+const DISCOUNT_CODES = { "FIRSTSONG15": 5, "AMIGA5": 5, "REFERRAL10": 10, "FIRSTSONG15": 15, "MOM50": 50 };
 let currentPrice = 0;
 let discountAmount = 0;
 
@@ -1558,20 +1551,14 @@ window.addEventListener("DOMContentLoaded", function() {
   try {
     const url = new URL(window.location.href);
     const paid = url.searchParams.get("paid");
-    const started = localStorage.getItem("nm_payment_started");
-    if (paid === "1" || started === "1") {
-      const confirmBtn = document.getElementById("confirm-payment-btn");
-      if (confirmBtn) confirmBtn.style.display = "block";
-      if (paid === "1") {
-        confirmPaymentDone();
-        url.searchParams.delete("paid");
-        window.history.replaceState({}, document.title, url.pathname + (url.search ? url.search : "") + url.hash);
-        localStorage.removeItem("nm_payment_started");
-      }
+    if (paid === "1") {
+      confirmPaymentDone();
+      url.searchParams.delete("paid");
+      history.replaceState({}, document.title, url.pathname + url.hash);
+      localStorage.removeItem("nm_payment_started");
     }
   } catch (e) {}
 });
-
 
 // ── STRIPE PAYMENT LINKS ──
 const STRIPE_LINKS = {
@@ -1596,7 +1583,7 @@ function openStripeCheckout() {
   var emailEl = document.querySelector('input[name="email"]');
   var nameEl = document.querySelector('input[name="name"]');
   var deliveryEl = document.querySelector('select[name="delivery_time"]');
-  var codeEl = document.getElementById("referral-input");
+  var codeEl = document.getElementById('referral-input');
 
   var pkg = pkgEl ? pkgEl.value.trim() : "";
   var email = emailEl ? emailEl.value.trim() : "";
@@ -1606,8 +1593,8 @@ function openStripeCheckout() {
 
   if (!pkg || !(STANDARD[pkg] || RUSH[pkg])) {
     alert("Please select a package first. · Por favor selecciona un paquete primero.");
-    const pkgSection = document.getElementById("packages");
-    if (pkgSection) pkgSection.scrollIntoView({behavior:"smooth"});
+    const sec = document.getElementById("packages");
+    if (sec) sec.scrollIntoView({behavior:"smooth"});
     return;
   }
   if (!name) {
@@ -1623,29 +1610,15 @@ function openStripeCheckout() {
   var params = new URLSearchParams();
   params.set("prefilled_email", email);
   params.set("success_url", "https://www.nissemor.com/?paid=1");
-  if (promoCode && DISCOUNT_CODES[promoCode]) {
+  if (promoCode && typeof DISCOUNT_CODES !== "undefined" && DISCOUNT_CODES[promoCode]) {
     params.set("prefilled_promo_code", promoCode);
   }
 
   try {
     localStorage.setItem("nm_payment_started", "1");
-    localStorage.setItem("nm_order_name", name);
-    localStorage.setItem("nm_order_email", email);
-    localStorage.setItem("nm_order_package", pkg);
-    if (promoCode) localStorage.setItem("nm_order_code", promoCode);
   } catch (e) {}
 
   var finalUrl = baseUrl + (baseUrl.indexOf("?") === -1 ? "?" : "&") + params.toString();
-
-  var notice = document.getElementById("payment-required-notice");
-  var confirmBtn = document.getElementById("confirm-payment-btn");
-  if (notice) {
-    notice.innerHTML = '<p style="color:#25d366; font-size:.82rem; margin:0;">➡ Redirecting to secure payment... · Redirigiendo al pago seguro...</p>';
-  }
-  if (confirmBtn) {
-    confirmBtn.style.display = "block";
-  }
-
   window.location.href = finalUrl;
 }
 
