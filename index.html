@@ -368,10 +368,6 @@ footer .copy { font-size: .73rem; margin-top: 24px; color: rgba(200,168,188,.4);
   .form-wrap { padding:20px 14px; }
   #checkout-box { padding:18px 14px; }
 }
-
-#policy-check{cursor:pointer!important;pointer-events:auto!important;position:relative!important;z-index:9999!important;}
-label[for="policy-check"]{cursor:pointer!important;position:relative!important;z-index:9999!important;}
-#checkout-box, #order-form, .form-row { position: relative; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" crossorigin="anonymous"></script>
 <script>try { emailjs.init("NyAIczlrSpx2kYcxu"); } catch(e) { console.log("EmailJS init:", e); }</script>
@@ -770,7 +766,7 @@ window.addEventListener("error", function(e) {
       </div>
       <div class="form-row">
         <label>Referral Code <span>· Código de Referido (optional · opcional)</span></label>
-        <input type="text" name="referral_code" placeholder="" id="referral-input"/>
+        <input type="text" name="referral_code" placeholder="Enter referral code if you have one · Ingresa tu código si tienes uno" id="referral-input"/>
         <p id="referral-msg" style="font-size:.78rem; margin-top:6px; display:none;"></p>
       </div>
       <div class="form-row">
@@ -848,7 +844,7 @@ window.addEventListener("error", function(e) {
 
         <!-- Pay Button -->
         <button id="stripe-pay-btn" type="button" onclick="openStripeCheckout()" style="display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:16px; border-radius:30px; background:linear-gradient(135deg,#6772e5,#9b59b6); color:#fff; border:none; cursor:pointer; font-family:'Jost',sans-serif; font-size:.9rem; letter-spacing:.08em; font-weight:500; box-shadow:0 4px 20px rgba(103,114,229,.4);">
-          🔒 <span id="stripe-btn-text">Pay securely with Stripe · Paga seguro con Stripe</span>
+          🔒 <span id="stripe-btn-text">Pay Now · Pagar Ahora</span>
         </button>
 
         <p style="font-size:.75rem; color:rgba(200,168,188,.5); text-align:center; margin-top:8px;">Cards • Apple Pay • Google Pay • Klarna • Afterpay · 🔒 Stripe</p>
@@ -860,7 +856,7 @@ window.addEventListener("error", function(e) {
       </div>
 
       <div class="form-row" style="display:flex; gap:12px; align-items:flex-start;">
-      <input type="checkbox" id="policy-check" style="width:24px; height:24px; margin-top:2px; flex-shrink:0; accent-color:var(--pink); cursor:pointer; position:relative; z-index:9999; pointer-events:auto;" />
+      <input type="checkbox" id="policy-check" style="width:18px; height:18px; margin-top:3px; flex-shrink:0; accent-color:var(--pink);" />
       <label for="policy-check" style="font-size:.8rem; color:var(--muted); text-transform:none; letter-spacing:0; font-weight:300; cursor:pointer; line-height:1.6;">
         I agree to the <a href="#" onclick="openModal('modal-terms'); return false;" style="color:var(--pink);">Terms of Use</a> and <a href="#" onclick="openModal('modal-privacy'); return false;" style="color:var(--pink);">Privacy Policy</a>. All sales are final once production begins.<br/>
         <em style="color:rgba(200,168,188,.6);">Acepto los <a href="#" onclick="openModal('modal-terms'); return false;" style="color:var(--pink-light);">Términos de Uso</a> y la <a href="#" onclick="openModal('modal-privacy'); return false;" style="color:var(--pink-light);">Política de Privacidad</a>. Las ventas son finales una vez iniciada la producción.</em>
@@ -1080,7 +1076,7 @@ let currentAudio = null;
 let currentBtn = null;
 let progressIntervals = {};
 
-function playDemo(audioId, btn) { try {
+function playDemo(audioId, btn) {
   const audio = document.getElementById(audioId);
   const num = audioId.replace('audio','');
   const bar = document.getElementById('bar' + num);
@@ -1223,7 +1219,7 @@ function seekDemo(audioId, progressId, event) {
     <p style="font-family:'Cormorant Garamond',serif; font-style:italic; color:#f4a0cc; font-size:1.05rem; margin-bottom:16px;">15% de descuento en tu primera canción</p>
     <p style="color:rgba(200,168,188,.75); font-size:.87rem; line-height:1.7; margin-bottom:24px;">
       Join our list and be the first to receive exclusive discounts, new packages & special offers.<br/>
-      <em style="font-size:.82em; color:rgba(200,168,188,.55);">Obtén 15% de descuento en tu primera canción + descuentos exclusivos y ofertas especiales.</em>
+      <em style="font-size:.82em; color:rgba(200,168,188,.55);">Obtén $5 de descuento en tu primera canción + descuentos exclusivos y ofertas especiales.</em>
     </p>
     <form id="mc-popup-form" style="display:flex; flex-direction:column; gap:12px;">
       <input type="text" id="mc-fname" placeholder="Your first name · Tu nombre" style="width:100%; background:#2d0a1f; border:1px solid rgba(224,96,160,.25); border-radius:10px; padding:13px 16px; color:#fff; font-family:'Jost',sans-serif; font-size:.9rem; outline:none;"/>
@@ -1305,7 +1301,7 @@ async function mcSubscribe(email, fname, msgId, btn, btnText) {
       to_name: fname || "Friend",
       name: fname || "Friend",
       email: email,
-      message: "Your exclusive discount code is: FIRSTSONG15 — Use it at checkout for 15% OFF your first personalized song!"
+      message: "Your exclusive discount code is: WELCOME5 — Use it at checkout for $5 OFF your first personalized song!"
     });
 
     // Also save to Mailchimp
@@ -1324,7 +1320,7 @@ async function mcSubscribe(email, fname, msgId, btn, btnText) {
     // Show success
     msg.style.display = "block";
     msg.style.color = "#25d366";
-    msg.innerHTML = "🎶 You're in! Check your email for your <strong>FIRSTSONG15</strong> $5 discount code!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>FIRSTSONG15</strong> de 15% de descuento.</em>";
+    msg.innerHTML = "🎶 You're in! Check your email for your <strong>WELCOME5</strong> $5 discount code!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>WELCOME5</strong> de $5 de descuento.</em>";
     btn.textContent = "✔ Subscribed!";
     btn.style.background = "rgba(37,211,102,.2)";
     btn.style.boxShadow = "none";
@@ -1336,7 +1332,7 @@ async function mcSubscribe(email, fname, msgId, btn, btnText) {
     // Fallback - still show success to user
     msg.style.display = "block";
     msg.style.color = "#25d366";
-    msg.innerHTML = "🎶 You're in! Check your email for your <strong>FIRSTSONG15</strong> code!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>FIRSTSONG15</strong>.</em>";
+    msg.innerHTML = "🎶 You're in! Check your email for your <strong>WELCOME5</strong> code!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>WELCOME5</strong>.</em>";
     btn.textContent = "✔ Subscribed!";
     btn.style.background = "rgba(37,211,102,.2)";
     btn.style.boxShadow = "none";
@@ -1359,7 +1355,7 @@ async function mcSubscribe(email, fname, msgId, btn, btnText) {
     // 3. Show success
     msg.style.display = "block";
     msg.style.color = "#25d366";
-    msg.innerHTML = "🎶 You're in! Check your email for your <strong>FIRSTSONG15</strong> $5 discount code!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>FIRSTSONG15</strong> de 15% de descuento.</em>";
+    msg.innerHTML = "🎶 You're in! Check your email for your <strong>WELCOME5</strong> $5 discount code!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>WELCOME5</strong> de $5 de descuento.</em>";
     btn.textContent = "✔ Subscribed!";
     btn.style.background = "rgba(37,211,102,.2)";
     btn.style.boxShadow = "none";
@@ -1481,7 +1477,7 @@ const PRICES = {
   "Family Story / Historia de Familia – $89 ✦": 89,
   "Forever Gift / Regalo Eterno – $149": 149
 };
-const DISCOUNT_CODES = { "FIRSTSONG15": 5, "AMIGA5": 5, "REFERRAL10": 10, "FIRSTSONG15": 15, "MOM50": 50 };
+const DISCOUNT_CODES = { "WELCOME5": 5, "AMIGA5": 5, "REFERRAL10": 10, "FIRSTSONG15": 15, "MOM50": 50 };
 let currentPrice = 0;
 let discountAmount = 0;
 
@@ -1546,20 +1542,6 @@ document.addEventListener("input", function(e) {
   if (e.target.id === "referral-input") updatePriceSummary();
 });
 
-
-window.addEventListener("DOMContentLoaded", function() {
-  try {
-    const url = new URL(window.location.href);
-    const paid = url.searchParams.get("paid");
-    if (paid === "1") {
-      confirmPaymentDone();
-      url.searchParams.delete("paid");
-      history.replaceState({}, document.title, url.pathname + url.hash);
-      localStorage.removeItem("nm_payment_started");
-    }
-  } catch (e) {}
-});
-
 // ── STRIPE PAYMENT LINKS ──
 const STRIPE_LINKS = {
   "Sweet Melody / Melodía Dulce – $49": "https://buy.stripe.com/3cI9AUfqvf8Vghwe2yew801",
@@ -1578,48 +1560,20 @@ function openStripeCheckout() {
     "Family Story / Historia de Familia – $89 ✦": "https://buy.stripe.com/eVqfZidinbWJ7L04rYew806",
     "Forever Gift / Regalo Eterno – $149": "https://buy.stripe.com/4gM4gA0vBbWJd5k2jQew807"
   };
-
-  var pkgEl = document.querySelector('select[name="package"]');
-  var emailEl = document.querySelector('input[name="email"]');
-  var nameEl = document.querySelector('input[name="name"]');
-  var deliveryEl = document.querySelector('select[name="delivery_time"]');
-  var codeEl = document.getElementById('referral-input');
-
-  var pkg = pkgEl ? pkgEl.value.trim() : "";
-  var email = emailEl ? emailEl.value.trim() : "";
-  var name = nameEl ? nameEl.value.trim() : "";
-  var delivery = deliveryEl ? deliveryEl.value : "standard";
-  var promoCode = codeEl ? codeEl.value.trim().toUpperCase() : "";
-
-  if (!pkg || !(STANDARD[pkg] || RUSH[pkg])) {
-    alert("Please select a package first. · Por favor selecciona un paquete primero.");
-    const sec = document.getElementById("packages");
-    if (sec) sec.scrollIntoView({behavior:"smooth"});
-    return;
+  var pkg = document.querySelector('select[name="package"]').value;
+  var email = document.querySelector('input[name="email"]').value;
+  var name = document.querySelector('input[name="name"]').value;
+  var delivery = document.querySelector('select[name="delivery_time"]') ? document.querySelector('select[name="delivery_time"]').value : "standard";
+  if (!pkg || !STANDARD[pkg]) { 
+    alert("Please select a package above first.\nPor favor selecciona un paquete arriba primero.");
+    document.getElementById("packages").scrollIntoView({behavior:"smooth"});
+    return; 
   }
-  if (!name) {
-    alert("Please enter your name. · Por favor escribe tu nombre.");
-    return;
-  }
-  if (!email) {
-    alert("Please enter your email. · Por favor escribe tu correo.");
-    return;
-  }
-
-  var baseUrl = delivery === "rush" ? (RUSH[pkg] || STANDARD[pkg]) : STANDARD[pkg];
-  var params = new URLSearchParams();
-  params.set("prefilled_email", email);
-  params.set("success_url", "https://www.nissemor.com/?paid=1");
-  if (promoCode && typeof DISCOUNT_CODES !== "undefined" && DISCOUNT_CODES[promoCode]) {
-    params.set("prefilled_promo_code", promoCode);
-  }
-
-  try {
-    localStorage.setItem("nm_payment_started", "1");
-  } catch (e) {}
-
-  var finalUrl = baseUrl + (baseUrl.indexOf("?") === -1 ? "?" : "&") + params.toString();
-  window.location.href = finalUrl;
+  if (!name) { alert("Please enter your name. · Por favor escribe tu nombre."); return; }
+  if (!email) { alert("Please enter your email. · Por favor escribe tu correo."); return; }
+  var url = delivery === "rush" ? RUSH[pkg] : STANDARD[pkg];
+  if (email) url = url + "?prefilled_email=" + encodeURIComponent(email);
+  window.open(url, "_blank");
 }
 
 function confirmPaymentDone() {
