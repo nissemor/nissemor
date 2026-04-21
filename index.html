@@ -368,6 +368,18 @@ footer .copy { font-size: .73rem; margin-top: 24px; color: rgba(200,168,188,.4);
   .form-wrap { padding:20px 14px; }
   #checkout-box { padding:18px 14px; }
 }
+
+#policy-check, #stripe-pay-btn, #confirm-payment-btn {
+  position: relative !important;
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+}
+label[for="policy-check"] {
+  cursor: pointer !important;
+  position: relative !important;
+  z-index: 9999 !important;
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" crossorigin="anonymous"></script>
 <script>try { emailjs.init("NyAIczlrSpx2kYcxu"); } catch(e) { console.log("EmailJS init:", e); }</script>
@@ -766,7 +778,7 @@ window.addEventListener("error", function(e) {
       </div>
       <div class="form-row">
         <label>Referral Code <span>· Código de Referido (optional · opcional)</span></label>
-        <input type="text" name="referral_code" placeholder="Enter referral code if you have one · Ingresa tu código si tienes uno" id="referral-input"/>
+        <input type="text" name="referral_code" placeholder="" id="referral-input"/>
         <p id="referral-msg" style="font-size:.78rem; margin-top:6px; display:none;"></p>
       </div>
       <div class="form-row">
@@ -844,7 +856,7 @@ window.addEventListener("error", function(e) {
 
         <!-- Pay Button -->
         <button id="stripe-pay-btn" type="button" onclick="openStripeCheckout()" style="display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:16px; border-radius:30px; background:linear-gradient(135deg,#6772e5,#9b59b6); color:#fff; border:none; cursor:pointer; font-family:'Jost',sans-serif; font-size:.9rem; letter-spacing:.08em; font-weight:500; box-shadow:0 4px 20px rgba(103,114,229,.4);">
-          🔒 <span id="stripe-btn-text">Pay Now · Pagar Ahora</span>
+          🔒 <span id="stripe-btn-text">Pay securely with Stripe · Paga seguro con Stripe</span>
         </button>
 
         <p style="font-size:.75rem; color:rgba(200,168,188,.5); text-align:center; margin-top:8px;">Cards • Apple Pay • Google Pay • Klarna • Afterpay · 🔒 Stripe</p>
@@ -856,7 +868,7 @@ window.addEventListener("error", function(e) {
       </div>
 
       <div class="form-row" style="display:flex; gap:12px; align-items:flex-start;">
-      <input type="checkbox" id="policy-check" style="width:18px; height:18px; margin-top:3px; flex-shrink:0; accent-color:var(--pink);" />
+      <input type="checkbox" id="policy-check" style="width:24px; height:24px; margin-top:2px; flex-shrink:0; accent-color:var(--pink); cursor:pointer; position:relative; z-index:9999; pointer-events:auto;" />
       <label for="policy-check" style="font-size:.8rem; color:var(--muted); text-transform:none; letter-spacing:0; font-weight:300; cursor:pointer; line-height:1.6;">
         I agree to the <a href="#" onclick="openModal('modal-terms'); return false;" style="color:var(--pink);">Terms of Use</a> and <a href="#" onclick="openModal('modal-privacy'); return false;" style="color:var(--pink);">Privacy Policy</a>. All sales are final once production begins.<br/>
         <em style="color:rgba(200,168,188,.6);">Acepto los <a href="#" onclick="openModal('modal-terms'); return false;" style="color:var(--pink-light);">Términos de Uso</a> y la <a href="#" onclick="openModal('modal-privacy'); return false;" style="color:var(--pink-light);">Política de Privacidad</a>. Las ventas son finales una vez iniciada la producción.</em>
@@ -1452,24 +1464,49 @@ window.addEventListener("load", function() {
 
 <script>
 try {
-const canvas = document.getElementById("sparkle-canvas");
-const ctx = canvas.getContext("2d");
-let W, H, sparks = [];
-function resize(){ W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
-resize(); window.addEventListener("resize", resize);
-function rand(a,b){ return Math.random()*(b-a)+a; }
-for(let i=0;i<55;i++) sparks.push({x:rand(0,1),y:rand(0,1),size:rand(.8,2.2),alpha:rand(.15,.8),speed:rand(.0004,.0012),phase:rand(0,Math.PI*2)});
-function draw(t){
-  ctx.clearRect(0,0,W,H);
-  for(const s of sparks){
-    const a=(Math.sin(t*s.speed*1000+s.phase)+1)/2;
-    ctx.beginPath(); ctx.arc(s.x*W,s.y*H,s.size,0,Math.PI*2);
-    ctx.fillStyle=`rgba(224,96,160,${a*s.alpha})`; ctx.fill();
+  const canvas = document.getElementById("sparkle-canvas");
+  if (canvas) {
+    const ctx = canvas.getContext("2d");
+    let W, H, sparks = [];
+    function resize() {
+      W = canvas.width = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    function rand(a, b) {
+      return Math.random() * (b - a) + a;
+    }
+
+    for (let i = 0; i < 55; i++) {
+      sparks.push({
+        x: rand(0, 1),
+        y: rand(0, 1),
+        size: rand(.8, 2.2),
+        alpha: rand(.15, .8),
+        speed: rand(.0004, .0012),
+        phase: rand(0, Math.PI * 2)
+      });
+    }
+
+    function draw(t) {
+      ctx.clearRect(0, 0, W, H);
+      for (const s of sparks) {
+        const a = (Math.sin(t * s.speed * 1000 + s.phase) + 1) / 2;
+        ctx.beginPath();
+        ctx.arc(s.x * W, s.y * H, s.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(224,96,160,${a * s.alpha})`;
+        ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    }
+
+    requestAnimationFrame(draw);
   }
-  requestAnimationFrame(draw);
-} catch(e) { console.log("Sparkle error:", e); }
+} catch (e) {
+  console.log("Sparkle error:", e);
 }
-requestAnimationFrame(draw);
 
 // ── PRICES & DISCOUNT ──
 const PRICES = {
