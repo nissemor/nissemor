@@ -948,7 +948,7 @@ window.addEventListener("error", function(e) {
           ✔ I completed my payment · Ya completé mi pago
         </button>
       </div>
-      <button type="submit" id="submit-order-btn" class="btn-primary form-submit" disabled style="opacity:.4; cursor:not-allowed;">
+      <button type="submit" id="submit-order-btn" class="btn-primary form-submit" disabled style="opacity:0; cursor:not-allowed; height:0; padding:0; margin:0; overflow:hidden; border:none;">
         Step 2: Send My Order · Paso 2: Enviar Mi Pedido
       </button>
       <p id="payment-required-notice" style="text-align:center; font-size:.78rem; color:rgba(255,150,150,.8); margin-top:8px;">⚠️ Please complete payment above first · Por favor completa el pago arriba primero</p>
@@ -1638,20 +1638,19 @@ function openStripeCheckout() {
 }
 
 function confirmPaymentDone() {
-  // Enable submit button
   var submitBtn = document.getElementById("submit-order-btn");
   var notice = document.getElementById("payment-required-notice");
   var confirmBtn = document.getElementById("confirm-payment-btn");
-  
+
+  notice.innerHTML = '<p style="color:#25d366; font-size:.82rem; margin:0;">✅ Payment confirmed! Sending your order automatically...</p>' +
+    '<p style="color:rgba(37,211,102,.7); font-size:.78rem; font-style:italic; margin:4px 0 0;">¡Pago confirmado! Enviando tu pedido automáticamente...</p>';
+
+  confirmBtn.style.display = "none";
+
+  // Auto-submit the form
   submitBtn.disabled = false;
   submitBtn.style.opacity = "1";
-  submitBtn.style.cursor = "pointer";
-  submitBtn.textContent = "✦ Send My Order · Enviar Mi Pedido";
-  
-  notice.innerHTML = '<p style="color:#25d366; font-size:.82rem; margin:0;">✅ Payment confirmed! You can now submit your order.</p>' +
-    '<p style="color:rgba(37,211,102,.7); font-size:.78rem; font-style:italic; margin:4px 0 0;">¡Pago confirmado! Ya puedes enviar tu pedido.</p>';
-  
-  confirmBtn.style.display = "none";
+  submitBtn.click();
 }
 
 function closeStripeModal() {}
