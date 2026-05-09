@@ -1337,12 +1337,12 @@ function seekDemo(audioId, progressId, event) {
 async function mlSubscribe(email, fname, msgId, btn, btnText) {
   const msg = document.getElementById(msgId);
   try {
-    const res = await fetch("https://connect.mailerlite.com/api/subscribers", {
+    const res = await fetch("/api/subscribe-order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiYTBlYmRiMTVlYTg3NTMwMWMwNTFjOTc1M2I0ODc4ZTU3NmMyZWJiMWJmMTk3ZjBkNGQ4YzRiY2RlYmIxOTczNjk0ZjE3OTViOTk0ZDRjMDEiLCJpYXQiOjE3NzgyOTYzNDYuNDc5MDk3LCJuYmYiOjE3NzgyOTYzNDYuNDc5MDk5LCJleHAiOjQ5MzM5Njk5NDYuNDczNTk4LCJzdWIiOiIyMzUxMjE4Iiwic2NvcGVzIjpbXX0.BQZSbumSfFoo_vpcLg2cG7i58fPwoiSo4ryGVyOBJuixzJYbLRCmRYU2O1dCjiJ3bIOzTyLMJzqW6Nu9Arfmn20isBUbczt23E9LbdiraKh_eQyWY6NDfpZG8ScYAuqcQAReRZy4dZNgU4fetMa858SMdlx18Exx20uMLBWuZNSYbBNIeEi_sNPFX43HXuL7hz1MzCW6IEXTgbe8j-_XYG89evPhFDz1N0PL1CXF-69QGSoPhuLGtN2cC8obEmI6zQak-woOuQoVaLmvQCSVo9MBOXUangrdp7W8PmabPzjAQxjZ1DY_EEUgVJaQUo6O7FSCjk6GccCPO85otGIF5dw13j8cAIhlNTWnflW3cOmj7PkmWIF47AnbxNoUOmN7ju5MyAYATMxbbiwnobNgtlYqgrqAXqVlfs0wyGng0KATSn66jyGLsJv0oUSQt_hXTB4RLYUYlw4ywnqp_OurRaAzuANO55HGcNCTl0hqm9Slv0nk0kU0oX6fBt292hBsPZGZxCGfKeulEa4Rirm_nACoMw4Asryo2JPNBsH8ZDwbd5QG3Pg0AdJb82fe9Ka_xBiLmBDZp0jkpCy8QkqWqTOTggBmxGGBogKr3U_Nr5P_BuVUUqQOefZuuBPeZ7FSeSh1ogTom0cHTr33TShTtWJk0zMqckMiKLjUC-2NZNI"
+        
       },
       body: JSON.stringify({
         email: email,
@@ -1728,12 +1728,12 @@ if (form) {
         const storyVal = form.querySelector('textarea[name="story"]')?.value || "";
         const referralVal = form.querySelector('input[name="referral_code"]')?.value || "None";
         try {
-          await fetch("https://connect.mailerlite.com/api/subscribers", {
+          await fetch("/api/subscribe-order", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
               "Accept": "application/json",
-              "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiYTBlYmRiMTVlYTg3NTMwMWMwNTFjOTc1M2I0ODc4ZTU3NmMyZWJiMWJmMTk3ZjBkNGQ4YzRiY2RlYmIxOTczNjk0ZjE3OTViOTk0ZDRjMDEiLCJpYXQiOjE3NzgyOTYzNDYuNDc5MDk3LCJuYmYiOjE3NzgyOTYzNDYuNDc5MDk5LCJleHAiOjQ5MzM5Njk5NDYuNDczNTk4LCJzdWIiOiIyMzUxMjE4Iiwic2NvcGVzIjpbXX0.BQZSbumSfFoo_vpcLg2cG7i58fPwoiSo4ryGVyOBJuixzJYbLRCmRYU2O1dCjiJ3bIOzTyLMJzqW6Nu9Arfmn20isBUbczt23E9LbdiraKh_eQyWY6NDfpZG8ScYAuqcQAReRZy4dZNgU4fetMa858SMdlx18Exx20uMLBWuZNSYbBNIeEi_sNPFX43HXuL7hz1MzCW6IEXTgbe8j-_XYG89evPhFDz1N0PL1CXF-69QGSoPhuLGtN2cC8obEmI6zQak-woOuQoVaLmvQCSVo9MBOXUangrdp7W8PmabPzjAQxjZ1DY_EEUgVJaQUo6O7FSCjk6GccCPO85otGIF5dw13j8cAIhlNTWnflW3cOmj7PkmWIF47AnbxNoUOmN7ju5MyAYATMxbbiwnobNgtlYqgrqAXqVlfs0wyGng0KATSn66jyGLsJv0oUSQt_hXTB4RLYUYlw4ywnqp_OurRaAzuANO55HGcNCTl0hqm9Slv0nk0kU0oX6fBt292hBsPZGZxCGfKeulEa4Rirm_nACoMw4Asryo2JPNBsH8ZDwbd5QG3Pg0AdJb82fe9Ka_xBiLmBDZp0jkpCy8QkqWqTOTggBmxGGBogKr3U_Nr5P_BuVUUqQOefZuuBPeZ7FSeSh1ogTom0cHTr33TShTtWJk0zMqckMiKLjUC-2NZNI"
+              
             },
             body: JSON.stringify({
               email: emailVal,
