@@ -6,7 +6,25 @@ export default async function handler(req, res) {
 
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-    console.log('subscribe-order body:', JSON.stringify(body));
+
+    const payload = {
+      email: body.email,
+      fields: {
+        name: body.fields?.name || "",
+        package: body.fields?.package || "",
+        occasion: body.fields?.occasion || "",
+        delivery_time: body.fields?.delivery_time || "",
+        names: body.fields?.names || "",
+        voice_type: body.fields?.voice_type || "",
+        music_style: body.fields?.music_style || "",
+        tempo: body.fields?.tempo || "",
+        language: body.fields?.language || "",
+        story: body.fields?.story || ""
+      },
+      groups: body.groups || []
+    };
+
+    console.log('Sending to MailerLite:', JSON.stringify(payload));
 
     const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
       method: 'POST',
@@ -15,7 +33,7 @@ export default async function handler(req, res) {
         'Accept': 'application/json',
         'Authorization': `Bearer ${process.env.MAILERLITE_API_KEY}`
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(payload)
     });
     const data = await response.json();
     console.log('MailerLite response:', JSON.stringify(data));
