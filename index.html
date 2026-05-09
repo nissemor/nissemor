@@ -902,7 +902,7 @@ window.addEventListener("error", function(e) {
       <!-- Payment Section -->
       <div id="checkout-box" style="margin-bottom:28px; padding:24px; border:1px solid rgba(224,96,160,.25); border-radius:16px; background:rgba(224,96,160,.04);">
         <label style="display:block; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:#fff; font-weight:400; margin-bottom:16px;">
-          💳 Step 1: Pay · Paso 1: Pagar
+          💳 Step 1: Pay First · Paso 1: Primero Paga
         </label>
 
         <!-- Price Summary -->
@@ -941,13 +941,24 @@ window.addEventListener("error", function(e) {
 
         <p class="checkout-urgency">Limited spots available this week — production starts immediately after purchase · Cupos limitados esta semana — la producción comienza inmediatamente después de la compra</p>
 
-        <!-- After payment confirm -->
-        <button id="confirm-payment-btn" type="button" onclick="confirmPaymentDone()" style="display:none; width:100%; margin-top:10px; padding:13px; border-radius:30px; background:rgba(37,211,102,.15); border:1px solid rgba(37,211,102,.4); color:#25d366; font-family:'Jost',sans-serif; font-size:.85rem; cursor:pointer;">
-          ✔ Payment Done — Send My Form · Pago Hecho — Enviar Forma
+      </div>
+
+      <!-- STEP 2 — Complete Order -->
+      <div id="step2-box" style="margin-bottom:20px; padding:22px 24px; border:2px solid rgba(37,211,102,.35); border-radius:16px; background:rgba(37,211,102,.05);">
+        <label style="display:block; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:#25d366; font-weight:400; margin-bottom:10px;">
+          ✅ Step 2: Complete Your Order · Paso 2: Completa Tu Pedido
+        </label>
+        <p style="font-size:.85rem; color:rgba(200,168,188,.85); line-height:1.6; margin-bottom:16px;">
+          Already paid? Come back here and click below to send your order details. We'll start creating your song right away! 🎶<br/>
+          <em style="font-size:.8rem; color:rgba(200,168,188,.6);">¿Ya pagaste? Regresa aquí y haz clic abajo para enviar los detalles de tu pedido. ¡Empezamos de inmediato!</em>
+        </p>
+        <button id="confirm-payment-btn" type="button" onclick="confirmPaymentDone()" style="display:block; width:100%; padding:16px; border-radius:30px; background:linear-gradient(135deg,rgba(37,211,102,.25),rgba(37,211,102,.1)); border:2px solid rgba(37,211,102,.6); color:#25d366; font-family:'Jost',sans-serif; font-size:.95rem; font-weight:500; letter-spacing:.08em; cursor:pointer; transition:all .3s;">
+          ✔ Payment Done — Send My Order 🎶 · Pago Hecho — Enviar Mi Pedido
         </button>
       </div>
+
       <button type="submit" id="submit-order-btn" class="btn-primary form-submit" disabled style="opacity:0; cursor:not-allowed; height:0; padding:0; margin:0; overflow:hidden; border:none;">
-        Step 2: Send My Order · Paso 2: Enviar Mi Pedido
+        Send My Order · Enviar Mi Pedido
       </button>
       <p id="payment-required-notice" style="text-align:center; font-size:.78rem; color:rgba(255,150,150,.8); margin-top:8px;">⚠️ Please complete payment above first · Por favor completa el pago arriba primero</p>
       <p class="form-note">
