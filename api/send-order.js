@@ -29,7 +29,7 @@ export default async function handler(req, res) {
         Authorization: `Bearer ${process.env.RESEND_API_KEY}`
       },
       body: JSON.stringify({
-        from: 'Nisse Mor <onboarding@resend.dev>',
+        from: 'Nisse Mor <official.nissemor@gmail.com>',
         to: ['official.nissemor@gmail.com'],
         subject: `🎶 New Order from ${body.name || 'New Client'}!`,
         html: `
@@ -69,7 +69,7 @@ export default async function handler(req, res) {
         Authorization: `Bearer ${process.env.RESEND_API_KEY}`
       },
       body: JSON.stringify({
-        from: 'Nisse Mor <onboarding@resend.dev>',
+        from: 'Nisse Mor <official.nissemor@gmail.com>',
         to: [body.email],
         subject: `🎶 Thank you for your order, ${body.name || ''}!`,
         html: `
