@@ -1605,9 +1605,18 @@ const STRIPE_LINKS = {
 function toggleStripeBtn() {
   const checked = document.getElementById("policy-check").checked;
   const btn = document.getElementById("stripe-pay-btn");
+  const label = document.querySelector('label[for="policy-check"]');
   btn.disabled = !checked;
   btn.style.opacity = checked ? "1" : ".45";
   btn.style.cursor = checked ? "pointer" : "not-allowed";
+  if (checked) {
+    label.style.color = "#25d366";
+    label.insertAdjacentHTML("afterbegin", "<span id='check-mark' style='color:#25d366; font-size:1.1rem; margin-right:6px;'>✔</span>");
+  } else {
+    label.style.color = "";
+    const mark = document.getElementById("check-mark");
+    if (mark) mark.remove();
+  }
 }
 
 function openStripeCheckout() {
