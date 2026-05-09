@@ -1310,7 +1310,7 @@ function seekDemo(audioId, progressId, event) {
     <form id="mc-popup-form" style="display:flex; flex-direction:column; gap:12px;">
       <input type="text" id="mc-fname" placeholder="Your first name · Tu nombre" style="width:100%; background:#2d0a1f; border:1px solid rgba(224,96,160,.25); border-radius:10px; padding:13px 16px; color:#fff; font-family:'Jost',sans-serif; font-size:.9rem; outline:none;"/>
       <input type="email" id="mc-email" placeholder="your@email.com" required style="width:100%; background:#2d0a1f; border:1px solid rgba(224,96,160,.25); border-radius:10px; padding:13px 16px; color:#fff; font-family:'Jost',sans-serif; font-size:.9rem; outline:none;"/>
-      <button type="submit" class="btn-primary" style="padding:15px; font-size:.85rem;">✦ Get My $5 Discount · Obtener $5 de Descuento</button>
+      <button type="submit" class="btn-primary" style="padding:15px; font-size:.85rem;">✦ Get My 15% Discount · Obtener 15% de Descuento</button>
     </form>
     <p id="mc-popup-msg" style="display:none; margin-top:14px; font-size:.85rem; line-height:1.6;"></p>
     <p style="font-size:.72rem; color:rgba(200,168,188,.35); margin-top:14px;">No spam. Unsubscribe anytime. · Sin spam. Cancela cuando quieras.</p>
@@ -1336,24 +1336,49 @@ function seekDemo(audioId, progressId, event) {
 </section>
 
 <script>
-// ── MAILCHIMP SUBSCRIBE ──
-async function subscribeMailchimp(email, fname) {
+// ── MAILERLITE SUBSCRIBE ──
+// Group ID: 186956983193044012 (NisseMor Website Subscribers)
+async function mlSubscribe(email, fname, msgId, btn, btnText) {
+  const msg = document.getElementById(msgId);
   try {
-    const res = await fetch("https://us1.api.mailchimp.com/3.0/lists/d1b550cd67/members", {
+    const res = await fetch("https://connect.mailerlite.com/api/subscribers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Basic " + btoa("anystring:YOUR_API_KEY")
+        "Accept": "application/json",
+        "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiYTBlYmRiMTVlYTg3NTMwMWMwNTFjOTc1M2I0ODc4ZTU3NmMyZWJiMWJmMTk3ZjBkNGQ4YzRiY2RlYmIxOTczNjk0ZjE3OTViOTk0ZDRjMDEiLCJpYXQiOjE3NzgyOTYzNDYuNDc5MDk3LCJuYmYiOjE3NzgyOTYzNDYuNDc5MDk5LCJleHAiOjQ5MzM5Njk5NDYuNDczNTk4LCJzdWIiOiIyMzUxMjE4Iiwic2NvcGVzIjpbXX0.BQZSbumSfFoo_vpcLg2cG7i58fPwoiSo4ryGVyOBJuixzJYbLRCmRYU2O1dCjiJ3bIOzTyLMJzqW6Nu9Arfmn20isBUbczt23E9LbdiraKh_eQyWY6NDfpZG8ScYAuqcQAReRZy4dZNgU4fetMa858SMdlx18Exx20uMLBWuZNSYbBNIeEi_sNPFX43HXuL7hz1MzCW6IEXTgbe8j-_XYG89evPhFDz1N0PL1CXF-69QGSoPhuLGtN2cC8obEmI6zQak-woOuQoVaLmvQCSVo9MBOXUangrdp7W8PmabPzjAQxjZ1DY_EEUgVJaQUo6O7FSCjk6GccCPO85otGIF5dw13j8cAIhlNTWnflW3cOmj7PkmWIF47AnbxNoUOmN7ju5MyAYATMxbbiwnobNgtlYqgrqAXqVlfs0wyGng0KATSn66jyGLsJv0oUSQt_hXTB4RLYUYlw4ywnqp_OurRaAzuANO55HGcNCTl0hqm9Slv0nk0kU0oX6fBt292hBsPZGZxCGfKeulEa4Rirm_nACoMw4Asryo2JPNBsH8ZDwbd5QG3Pg0AdJb82fe9Ka_xBiLmBDZp0jkpCy8QkqWqTOTggBmxGGBogKr3U_Nr5P_BuVUUqQOefZuuBPeZ7FSeSh1ogTom0cHTr33TShTtWJk0zMqckMiKLjUC-2NZNI"
       },
       body: JSON.stringify({
-        email_address: email,
-        status: "subscribed",
-        merge_fields: { FNAME: fname || "" },
-        tags: ["website-signup"]
+        email: email,
+        fields: { name: fname || "" },
+        groups: ["186956983193044012"]
       })
     });
-    return res.ok || res.status === 400; // 400 = already subscribed
-  } catch(e) { return false; }
+
+    const data = await res.json();
+
+    // 200 = new subscriber, 201 = updated existing — both are success
+    if (res.ok || res.status === 200 || res.status === 201) {
+      msg.style.display = "block";
+      msg.style.color = "#25d366";
+      msg.innerHTML = "🎶 You're in! Check your email for your <strong>WELCOME15</strong> 15% discount!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>WELCOME15</strong> de 15% de descuento.</em>";
+      btn.textContent = "✔ Subscribed!";
+      btn.style.background = "rgba(37,211,102,.2)";
+      btn.style.boxShadow = "none";
+      localStorage.setItem("nm_subscribed", "1");
+      setTimeout(() => closeNewsletter(), 3000);
+    } else {
+      throw new Error(data.message || "Error");
+    }
+
+  } catch(err) {
+    console.error("MailerLite error:", err);
+    msg.style.display = "block";
+    msg.style.color = "#f4a0cc";
+    msg.innerHTML = "Something went wrong. Please try again. · Algo salió mal. Intenta de nuevo.";
+    btn.textContent = btnText;
+    btn.disabled = false;
+  }
 }
 
 // Popup form
@@ -1361,101 +1386,19 @@ document.getElementById("mc-popup-form").addEventListener("submit", async functi
   e.preventDefault();
   const email = document.getElementById("mc-email").value;
   const fname = document.getElementById("mc-fname").value;
-  const msg = document.getElementById("mc-popup-msg");
   const btn = this.querySelector("button");
   btn.textContent = "Subscribing…"; btn.disabled = true;
-  // Use Mailchimp embed approach via hidden form
-  mcSubscribe(email, fname, "mc-popup-msg", btn, "✦ Get My $5 Discount · Obtener $5 de Descuento");
+  mlSubscribe(email, fname, "mc-popup-msg", btn, "✦ Get My 15% Discount · Obtener 15% de Descuento");
 });
 
 // Banner form
 document.getElementById("mc-banner-form").addEventListener("submit", async function(e) {
   e.preventDefault();
   const email = document.getElementById("mc-banner-email").value;
-  const msg = document.getElementById("mc-banner-msg");
   const btn = this.querySelector("button");
   btn.textContent = "Subscribing…"; btn.disabled = true;
-  mcSubscribe(email, "", "mc-banner-msg", btn, "✦ Subscribe");
+  mlSubscribe(email, "", "mc-banner-msg", btn, "✦ Subscribe");
 });
-
-async function mcSubscribe(email, fname, msgId, btn, btnText) {
-  const msg = document.getElementById(msgId);
-  try {
-    // Send welcome email via EmailJS directly to subscriber
-    await emailjs.send("service_h8bqqbn", "template_k8qc0ue", {
-      to_email: email,
-      to_name: fname || "Friend",
-      name: fname || "Friend",
-      email: email,
-      message: "Your exclusive discount code is: WELCOME5 — Use it at checkout for $5 OFF your first personalized song!"
-    });
-
-    // Also save to Mailchimp
-    const callbackName = "mcCb_" + Date.now();
-    const script = document.createElement("script");
-    window[callbackName] = function(data) {
-      delete window[callbackName];
-      if (document.body.contains(script)) document.body.removeChild(script);
-    };
-    script.src = "https://nissemor.us18.list-manage.com/subscribe/post-json?u=46c15e0b70e980710b79515e5&id=d1b550cd67&f_id=00bfb2e6f0"
-      + "&EMAIL=" + encodeURIComponent(email)
-      + "&FNAME=" + encodeURIComponent(fname || "")
-      + "&c=" + callbackName;
-    document.body.appendChild(script);
-
-    // Show success
-    msg.style.display = "block";
-    msg.style.color = "#25d366";
-    msg.innerHTML = "🎶 You're in! Check your email for your <strong>WELCOME5</strong> $5 discount code!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>WELCOME5</strong> de $5 de descuento.</em>";
-    btn.textContent = "✔ Subscribed!";
-    btn.style.background = "rgba(37,211,102,.2)";
-    btn.style.boxShadow = "none";
-    localStorage.setItem("nm_subscribed", "1");
-    setTimeout(() => closeNewsletter(), 3000);
-
-  } catch(err) {
-    console.error("EmailJS error:", err);
-    // Fallback - still show success to user
-    msg.style.display = "block";
-    msg.style.color = "#25d366";
-    msg.innerHTML = "🎶 You're in! Check your email for your <strong>WELCOME5</strong> code!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>WELCOME5</strong>.</em>";
-    btn.textContent = "✔ Subscribed!";
-    btn.style.background = "rgba(37,211,102,.2)";
-    btn.style.boxShadow = "none";
-    localStorage.setItem("nm_subscribed", "1");
-    setTimeout(() => closeNewsletter(), 3000);
-
-    // 2. Save to Mailchimp via JSONP
-    const callbackName = "mcCb_" + Date.now();
-    const script = document.createElement("script");
-    window[callbackName] = function(data) {
-      delete window[callbackName];
-      if (document.body.contains(script)) document.body.removeChild(script);
-    };
-    script.src = "https://nissemor.us18.list-manage.com/subscribe/post-json?u=46c15e0b70e980710b79515e5&id=d1b550cd67&f_id=00bfb2e6f0"
-      + "&EMAIL=" + encodeURIComponent(email)
-      + "&FNAME=" + encodeURIComponent(fname || "")
-      + "&c=" + callbackName;
-    document.body.appendChild(script);
-
-    // 3. Show success
-    msg.style.display = "block";
-    msg.style.color = "#25d366";
-    msg.innerHTML = "🎶 You're in! Check your email for your <strong>WELCOME5</strong> $5 discount code!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>WELCOME5</strong> de $5 de descuento.</em>";
-    btn.textContent = "✔ Subscribed!";
-    btn.style.background = "rgba(37,211,102,.2)";
-    btn.style.boxShadow = "none";
-    localStorage.setItem("nm_subscribed", "1");
-    setTimeout(() => closeNewsletter(), 3000);
-
-  } catch(err) {
-    msg.style.display = "block";
-    msg.style.color = "#f4a0cc";
-    msg.innerHTML = "Something went wrong. Try again. · Algo salió mal. Intenta de nuevo.";
-    btn.textContent = btnText;
-    btn.disabled = false;
-  }
-}
 
 // ── POPUP TIMING ──
 function closeNewsletter() {
@@ -1464,7 +1407,6 @@ function closeNewsletter() {
 }
 
 window.addEventListener("load", function() {
-  // Use sessionStorage so popup shows once per browser session (not forever blocked)
   if (!sessionStorage.getItem("nm_popup_shown") && !localStorage.getItem("nm_subscribed")) {
     setTimeout(() => {
       const p = document.getElementById("newsletter-popup");
