@@ -467,7 +467,7 @@ window.addEventListener("error", function(e) {
 <div id="mday-banner" style="position:relative; background:linear-gradient(135deg,#c0106e,#e060a0,#ff6eb4); padding:12px 20px; text-align:center; z-index:9990; overflow:hidden;">
   <div style="position:absolute; inset:0; background:linear-gradient(90deg, transparent 0%, rgba(255,255,255,.15) 50%, transparent 100%); animation:shimmer 2.5s infinite;"></div>
   <p style="color:#fff; font-family:'Jost',sans-serif; font-size:.9rem; font-weight:500; letter-spacing:.06em; margin:0; position:relative; z-index:1;">
-    💖 <strong>Mother's Day Launch Special</strong> — 15% OFF · Use code <strong style="background:rgba(255,255,255,.25); padding:2px 8px; border-radius:20px; letter-spacing:.1em;">MOM15</strong>
+    💖 <strong>Mother's Day Launch Special</strong> — $5 OFF · Use code <strong style="background:rgba(255,255,255,.25); padding:2px 8px; border-radius:20px; letter-spacing:.1em;">WELCOME5</strong>
   </p>
   <button onclick="document.getElementById('mday-banner').style.display='none'" style="position:absolute; right:14px; top:50%; transform:translateY(-50%); background:none; border:none; color:rgba(255,255,255,.7); font-size:1.1rem; cursor:pointer; z-index:2;">✕</button>
 </div>
@@ -1310,8 +1310,8 @@ function seekDemo(audioId, progressId, event) {
   <div style="max-width:480px; width:100%; background:linear-gradient(160deg,#1e0a28,#0d0b0f); border:1px solid rgba(224,96,160,.4); border-radius:24px; padding:48px 36px; text-align:center; position:relative; box-shadow:0 0 60px rgba(224,96,160,.2);">
     <button onclick="closeNewsletter()" style="position:absolute; top:14px; right:18px; background:none; border:none; color:rgba(200,168,188,.5); font-size:1.3rem; cursor:pointer;">✕</button>
     <div style="font-size:2.5rem; margin-bottom:14px;">🎶</div>
-    <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.9rem; color:#fff; margin-bottom:8px; line-height:1.2;">Get <em style="color:#e060a0;">15% OFF</em> your first song</h3>
-    <p style="font-family:'Cormorant Garamond',serif; font-style:italic; color:#f4a0cc; font-size:1.05rem; margin-bottom:16px;">15% de descuento en tu primera canción</p>
+    <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.9rem; color:#fff; margin-bottom:8px; line-height:1.2;">Get <em style="color:#e060a0;">$5 OFF</em> your first song</h3>
+    <p style="font-family:'Cormorant Garamond',serif; font-style:italic; color:#f4a0cc; font-size:1.05rem; margin-bottom:16px;">$5 de descuento en tu primera canción</p>
     <p style="color:rgba(200,168,188,.75); font-size:.87rem; line-height:1.7; margin-bottom:24px;">
       Join our list and be the first to receive exclusive discounts, new packages & special offers.<br/>
       <em style="font-size:.82em; color:rgba(200,168,188,.55);">Obtén $5 de descuento en tu primera canción + descuentos exclusivos y ofertas especiales.</em>
@@ -1319,7 +1319,7 @@ function seekDemo(audioId, progressId, event) {
     <form id="mc-popup-form" style="display:flex; flex-direction:column; gap:12px;">
       <input type="text" id="mc-fname" placeholder="Your first name · Tu nombre" style="width:100%; background:#2d0a1f; border:1px solid rgba(224,96,160,.25); border-radius:10px; padding:13px 16px; color:#fff; font-family:'Jost',sans-serif; font-size:.9rem; outline:none;"/>
       <input type="email" id="mc-email" placeholder="your@email.com" required style="width:100%; background:#2d0a1f; border:1px solid rgba(224,96,160,.25); border-radius:10px; padding:13px 16px; color:#fff; font-family:'Jost',sans-serif; font-size:.9rem; outline:none;"/>
-      <button type="submit" class="btn-primary" style="padding:15px; font-size:.85rem;">✦ Get My 15% Discount · Obtener 15% de Descuento</button>
+      <button type="submit" class="btn-primary" style="padding:15px; font-size:.85rem;">✦ Get My $5 OFF · Obtener $5 de Descuento</button>
     </form>
     <p id="mc-popup-msg" style="display:none; margin-top:14px; font-size:.85rem; line-height:1.6;"></p>
     <p style="font-size:.72rem; color:rgba(200,168,188,.35); margin-top:14px;">No spam. Unsubscribe anytime. · Sin spam. Cancela cuando quieras.</p>
@@ -1397,7 +1397,7 @@ document.getElementById("mc-popup-form").addEventListener("submit", async functi
   const fname = document.getElementById("mc-fname").value;
   const btn = this.querySelector("button");
   btn.textContent = "Subscribing…"; btn.disabled = true;
-  mlSubscribe(email, fname, "mc-popup-msg", btn, "✦ Get My 15% Discount · Obtener 15% de Descuento");
+  mlSubscribe(email, fname, "mc-popup-msg", btn, "✦ Get My $5 OFF · Obtener $5 de Descuento");
 });
 
 // Banner form
