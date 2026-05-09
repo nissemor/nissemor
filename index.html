@@ -1552,10 +1552,10 @@ function updatePriceSummary() {
     if (discountAmount > 0) {
       priceOriginal.style.display = "block";
       priceOriginal.textContent = "$" + basePrice;
-      discountLabel.style.display = "block";
+      if (discountLabel) discountLabel.style.display = "block";
     } else {
       priceOriginal.style.display = "none";
-      discountLabel.style.display = "none";
+      if (discountLabel) discountLabel.style.display = "none";
     }
     const deliveryEl = document.querySelector('select[name="delivery_time"]');
   const isRush = deliveryEl && deliveryEl.value === "rush";
@@ -1572,7 +1572,7 @@ function updatePriceSummary() {
     priceLabel.textContent = "Select a package above · Selecciona un paquete arriba";
     priceFinal.textContent = "—";
     priceOriginal.style.display = "none";
-    discountLabel.style.display = "none";
+    if (discountLabel) discountLabel.style.display = "none";
     if (stripeBtnText) stripeBtnText.textContent = "Select a package to pay · Selecciona un paquete";
   }
 }
