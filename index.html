@@ -799,7 +799,7 @@ window.addEventListener("error", function(e) {
     </div>
   </div>
   <div class="form-wrap" id="order-form-wrap">
-    <form id="order-form" action="https://formspree.io/f/xjgjrorb" method="POST">
+    <form id="order-form" action="/api/send-order" method="POST">
 
       <!-- Hidden subject for email -->
       <input type="hidden" name="_subject" value="🎶 New Order – Nisse Mor"/>
@@ -1707,7 +1707,7 @@ document.addEventListener("change", function(e) {
   if (e.target.id === "referral-input") updatePriceSummary();
 });
 
-// Form submission with Formspree
+// Form submission with Resend
 const form = document.getElementById("order-form");
 if (form) {
   form.addEventListener("submit", async function(e) {
@@ -1716,25 +1716,29 @@ if (form) {
     btn.textContent = "Sending… · Enviando…";
     btn.disabled = true;
     try {
-      const res = await fetch(form.action, {
+      const nameVal = form.querySelector('input[name="name"]')?.value || "";
+      const emailVal = form.querySelector('input[name="email"]')?.value || "";
+      const pkgVal = form.querySelector('select[name="package"]')?.value || "";
+      const occasionVal = form.querySelector('input[name="occasion"]')?.value || "";
+      const deliveryVal = form.querySelector('select[name="delivery_time"]')?.value || "";
+      const namesVal = form.querySelector('input[name="names"]')?.value || "";
+      const voiceVal = form.querySelector('select[name="voice_type"]')?.value || "";
+      const styleVal = form.querySelector('select[name="music_style"]')?.value || "";
+      const tempoVal = form.querySelector('select[name="tempo"]')?.value || "";
+      const languageVal = form.querySelector('select[name="language"]')?.value || "";
+      const storyVal = form.querySelector('textarea[name="story"]')?.value || "";
+
+      const res = await fetch("/api/send-order", {
         method: "POST",
-        body: new FormData(form),
-        headers: { "Accept": "application/json" }
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          name: nameVal, email: emailVal, package: pkgVal,
+          occasion: occasionVal, delivery_time: deliveryVal,
+          names: namesVal, voice_type: voiceVal, music_style: styleVal,
+          tempo: tempoVal, language: languageVal, story: storyVal
+        })
       });
       if (res.ok) {
-        // Add to MailerLite "NisseMor Orders" group to trigger confirmation email
-        const nameVal = form.querySelector('input[name="name"]')?.value || "";
-        const emailVal = form.querySelector('input[name="email"]')?.value || "";
-        const pkgVal = form.querySelector('select[name="package"]')?.value || "";
-        const occasionVal = form.querySelector('input[name="occasion"]')?.value || "";
-        const deliveryVal = form.querySelector('select[name="delivery_time"]')?.value || "";
-        const namesVal = form.querySelector('input[name="names"]')?.value || "";
-        const voiceVal = form.querySelector('select[name="voice_type"]')?.value || "";
-        const styleVal = form.querySelector('select[name="music_style"]')?.value || "";
-        const tempoVal = form.querySelector('select[name="tempo"]')?.value || "";
-        const languageVal = form.querySelector('select[name="language"]')?.value || "";
-        const storyVal = form.querySelector('textarea[name="story"]')?.value || "";
-        const referralVal = form.querySelector('input[name="referral_code"]')?.value || "None";
         try {
           await fetch("/api/subscribe-order", {
             method: "POST",
@@ -1755,8 +1759,7 @@ if (form) {
                 music_style: styleVal,
                 tempo: tempoVal,
                 language: languageVal,
-                story: storyVal,
-                referral_code: referralVal
+                story: storyVal
               },
               groups: ["186959405673088216"]
             })
