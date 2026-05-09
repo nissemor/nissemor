@@ -1624,6 +1624,7 @@ function openStripeCheckout() {
   }
   if (!name) { alert("Please enter your name. · Por favor escribe tu nombre."); return; }
   if (!email) { alert("Please enter your email. · Por favor escribe tu correo."); return; }
+  if (!document.getElementById("policy-check").checked) { alert("Please agree to the Terms of Use and Privacy Policy before continuing.\nPor favor acepta los Términos de Uso y la Política de Privacidad para continuar."); return; }
   var url = delivery === "rush" ? RUSH[pkg] : STANDARD[pkg];
   if (email) url = url + "?prefilled_email=" + encodeURIComponent(email);
   window.open(url, "_blank");
