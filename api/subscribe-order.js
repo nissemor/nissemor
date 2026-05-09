@@ -5,6 +5,8 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    
     const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
       method: 'POST',
       headers: {
@@ -12,7 +14,7 @@ export default async function handler(req, res) {
         'Accept': 'application/json',
         'Authorization': `Bearer ${process.env.MAILERLITE_API_KEY}`
       },
-      body: JSON.stringify(req.body)
+      body: JSON.stringify(body)
     });
     const data = await response.json();
     res.status(response.status).json(data);
