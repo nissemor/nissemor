@@ -16,7 +16,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         from: 'onboarding@resend.dev',
-        to: ['info@nissemor.com'],
+        to: ['official.nissemor@gmail.com'],
         subject: `🎶 New Order from ${body.name}!`,
         html: `
           <div style="font-family:Arial,sans-serif; max-width:600px; background:#0d0b0f; color:#fff; padding:32px; border-radius:12px;">
