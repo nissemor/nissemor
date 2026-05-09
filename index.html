@@ -1588,7 +1588,7 @@ const PRICES = {
   "Family Story / Historia de Familia – $89 ✦": 89,
   "Forever Gift / Regalo Eterno – $149": 149
 };
-const DISCOUNT_CODES = { "WELCOME5": 5, "AMIGA5": 5, "REFERRAL10": 10, "FIRSTSONG15": 15, "MOM50": 50 };
+const DISCOUNT_CODES = { "WELCOME5": 5, "AMIGA5": 5, "REFERRAL10": 10, "FIRSTSONG15": 15, "MOM15": 15 };
 let currentPrice = 0;
 let discountAmount = 0;
 
@@ -1605,7 +1605,7 @@ function updatePriceSummary() {
   const basePrice = PRICES[pkg] || 0;
   const code = referralInput ? referralInput.value.trim().toUpperCase() : "";
   const rawDiscount = DISCOUNT_CODES[code] || 0;
-  const isPctCode = ["MOM50", "FIRSTSONG15"].includes(code);
+  const isPctCode = ["MOM15", "FIRSTSONG15"].includes(code);
   discountAmount = isPctCode ? Math.round(basePrice * rawDiscount / 100) : rawDiscount;
   currentPrice = basePrice > 0 ? Math.max(0, basePrice - discountAmount) : 0;
   if (basePrice > 0) {
@@ -1731,7 +1731,7 @@ document.addEventListener("input", function(e) {
   msg.style.display = "block";
   if (DISCOUNT_CODES[code]) {
     msg.style.color = "#25d366";
-    const isPct = ["MOM50", "FIRSTSONG15"].includes(code);
+    const isPct = ["MOM15", "FIRSTSONG15"].includes(code);
     const discStr = isPct ? DISCOUNT_CODES[code] + "% off" : "$" + DISCOUNT_CODES[code] + " off";
     msg.textContent = "✔ Code valid! " + discStr + " · ¡Código válido! Descuento aplicado.";
   } else {
