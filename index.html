@@ -926,8 +926,17 @@ window.addEventListener("error", function(e) {
           <div>✔ 100% personalized<br><span class="es">100% personalizada</span></div>
         </div>
 
-        <!-- Pay Button -->
-        <button id="stripe-pay-btn" type="button" onclick="openStripeCheckout()" style="display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:16px; border-radius:30px; background:linear-gradient(135deg,#6772e5,#9b59b6); color:#fff; border:none; cursor:pointer; font-family:'Jost',sans-serif; font-size:.9rem; letter-spacing:.08em; font-weight:500; box-shadow:0 4px 20px rgba(103,114,229,.4);">
+        <!-- Checkbox BEFORE pay button -->
+        <div class="form-row" style="display:flex; gap:12px; align-items:flex-start; margin-bottom:14px;">
+          <input type="checkbox" id="policy-check" onchange="toggleStripeBtn()" style="width:24px; height:24px; margin-top:2px; flex-shrink:0; accent-color:var(--pink); cursor:pointer; position:relative; z-index:9999; pointer-events:auto;" />
+          <label for="policy-check" style="font-size:.8rem; color:var(--muted); text-transform:none; letter-spacing:0; font-weight:300; cursor:pointer; line-height:1.6;">
+            I agree to the <a href="#" onclick="openModal('modal-terms'); return false;" style="color:var(--pink);">Terms of Use</a> and <a href="#" onclick="openModal('modal-privacy'); return false;" style="color:var(--pink);">Privacy Policy</a>. All sales are final once production begins.<br/>
+            <em style="color:rgba(200,168,188,.6);">Acepto los <a href="#" onclick="openModal('modal-terms'); return false;" style="color:var(--pink-light);">Términos de Uso</a> y la <a href="#" onclick="openModal('modal-privacy'); return false;" style="color:var(--pink-light);">Política de Privacidad</a>. Las ventas son finales una vez iniciada la producción.</em>
+          </label>
+        </div>
+
+        <!-- Pay Button (disabled until checkbox checked) -->
+        <button id="stripe-pay-btn" type="button" onclick="openStripeCheckout()" disabled style="display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:16px; border-radius:30px; background:linear-gradient(135deg,#6772e5,#9b59b6); color:#fff; border:none; cursor:not-allowed; font-family:'Jost',sans-serif; font-size:.9rem; letter-spacing:.08em; font-weight:500; box-shadow:0 4px 20px rgba(103,114,229,.4); opacity:.45;">
           🔒 <span id="stripe-btn-text">Pay securely with Stripe · Paga seguro con Stripe</span>
         </button>
 
@@ -940,14 +949,6 @@ window.addEventListener("error", function(e) {
           ✔ I completed my payment · Ya completé mi pago
         </button>
       </div>
-
-      <div class="form-row" style="display:flex; gap:12px; align-items:flex-start;">
-      <input type="checkbox" id="policy-check" style="width:24px; height:24px; margin-top:2px; flex-shrink:0; accent-color:var(--pink); cursor:pointer; position:relative; z-index:9999; pointer-events:auto;" />
-      <label for="policy-check" style="font-size:.8rem; color:var(--muted); text-transform:none; letter-spacing:0; font-weight:300; cursor:pointer; line-height:1.6;">
-        I agree to the <a href="#" onclick="openModal('modal-terms'); return false;" style="color:var(--pink);">Terms of Use</a> and <a href="#" onclick="openModal('modal-privacy'); return false;" style="color:var(--pink);">Privacy Policy</a>. All sales are final once production begins.<br/>
-        <em style="color:rgba(200,168,188,.6);">Acepto los <a href="#" onclick="openModal('modal-terms'); return false;" style="color:var(--pink-light);">Términos de Uso</a> y la <a href="#" onclick="openModal('modal-privacy'); return false;" style="color:var(--pink-light);">Política de Privacidad</a>. Las ventas son finales una vez iniciada la producción.</em>
-      </label>
-    </div>
       <button type="submit" id="submit-order-btn" class="btn-primary form-submit" disabled style="opacity:.4; cursor:not-allowed;">
         Step 2: Send My Order · Paso 2: Enviar Mi Pedido
       </button>
@@ -1602,6 +1603,14 @@ const STRIPE_LINKS = {
   "Forever Gift / Regalo Eterno – $149": "https://buy.stripe.com/aFa9AU3HNe4Rc1g8Ieew803"
 };
 
+function toggleStripeBtn() {
+  const checked = document.getElementById("policy-check").checked;
+  const btn = document.getElementById("stripe-pay-btn");
+  btn.disabled = !checked;
+  btn.style.opacity = checked ? "1" : ".45";
+  btn.style.cursor = checked ? "pointer" : "not-allowed";
+}
+
 function openStripeCheckout() {
   const STANDARD = {
     "Sweet Melody / Melodía Dulce – $49": "https://buy.stripe.com/3cI9AUfqvf8Vghwe2yew801",
@@ -1624,7 +1633,6 @@ function openStripeCheckout() {
   }
   if (!name) { alert("Please enter your name. · Por favor escribe tu nombre."); return; }
   if (!email) { alert("Please enter your email. · Por favor escribe tu correo."); return; }
-  if (!document.getElementById("policy-check").checked) { alert("Please agree to the Terms of Use and Privacy Policy before continuing.\nPor favor acepta los Términos de Uso y la Política de Privacidad para continuar."); return; }
   var url = delivery === "rush" ? RUSH[pkg] : STANDARD[pkg];
   if (email) url = url + "?prefilled_email=" + encodeURIComponent(email);
   window.open(url, "_blank");
@@ -1703,22 +1711,47 @@ if (form) {
         headers: { "Accept": "application/json" }
       });
       if (res.ok) {
-        // Send order confirmation email via EmailJS
+        // Add to MailerLite "NisseMor Orders" group to trigger confirmation email
         const nameVal = form.querySelector('input[name="name"]')?.value || "";
         const emailVal = form.querySelector('input[name="email"]')?.value || "";
         const pkgVal = form.querySelector('select[name="package"]')?.value || "";
         const occasionVal = form.querySelector('input[name="occasion"]')?.value || "";
+        const deliveryVal = form.querySelector('select[name="delivery_time"]')?.value || "";
+        const namesVal = form.querySelector('input[name="names"]')?.value || "";
+        const voiceVal = form.querySelector('select[name="voice_type"]')?.value || "";
+        const styleVal = form.querySelector('select[name="music_style"]')?.value || "";
+        const tempoVal = form.querySelector('select[name="tempo"]')?.value || "";
+        const languageVal = form.querySelector('select[name="language"]')?.value || "";
+        const storyVal = form.querySelector('textarea[name="story"]')?.value || "";
+        const referralVal = form.querySelector('input[name="referral_code"]')?.value || "None";
         try {
-          await emailjs.send("service_h8bqqbn", "template_6ezr7yq", {
-            to_email: emailVal,
-            to_name: nameVal,
-            name: nameVal,
-            email: emailVal,
-            package: pkgVal,
-            occasion: occasionVal
+          await fetch("https://connect.mailerlite.com/api/subscribers", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiYTBlYmRiMTVlYTg3NTMwMWMwNTFjOTc1M2I0ODc4ZTU3NmMyZWJiMWJmMTk3ZjBkNGQ4YzRiY2RlYmIxOTczNjk0ZjE3OTViOTk0ZDRjMDEiLCJpYXQiOjE3NzgyOTYzNDYuNDc5MDk3LCJuYmYiOjE3NzgyOTYzNDYuNDc5MDk5LCJleHAiOjQ5MzM5Njk5NDYuNDczNTk4LCJzdWIiOiIyMzUxMjE4Iiwic2NvcGVzIjpbXX0.BQZSbumSfFoo_vpcLg2cG7i58fPwoiSo4ryGVyOBJuixzJYbLRCmRYU2O1dCjiJ3bIOzTyLMJzqW6Nu9Arfmn20isBUbczt23E9LbdiraKh_eQyWY6NDfpZG8ScYAuqcQAReRZy4dZNgU4fetMa858SMdlx18Exx20uMLBWuZNSYbBNIeEi_sNPFX43HXuL7hz1MzCW6IEXTgbe8j-_XYG89evPhFDz1N0PL1CXF-69QGSoPhuLGtN2cC8obEmI6zQak-woOuQoVaLmvQCSVo9MBOXUangrdp7W8PmabPzjAQxjZ1DY_EEUgVJaQUo6O7FSCjk6GccCPO85otGIF5dw13j8cAIhlNTWnflW3cOmj7PkmWIF47AnbxNoUOmN7ju5MyAYATMxbbiwnobNgtlYqgrqAXqVlfs0wyGng0KATSn66jyGLsJv0oUSQt_hXTB4RLYUYlw4ywnqp_OurRaAzuANO55HGcNCTl0hqm9Slv0nk0kU0oX6fBt292hBsPZGZxCGfKeulEa4Rirm_nACoMw4Asryo2JPNBsH8ZDwbd5QG3Pg0AdJb82fe9Ka_xBiLmBDZp0jkpCy8QkqWqTOTggBmxGGBogKr3U_Nr5P_BuVUUqQOefZuuBPeZ7FSeSh1ogTom0cHTr33TShTtWJk0zMqckMiKLjUC-2NZNI"
+            },
+            body: JSON.stringify({
+              email: emailVal,
+              fields: {
+                name: nameVal,
+                package: pkgVal,
+                occasion: occasionVal,
+                delivery_time: deliveryVal,
+                names: namesVal,
+                voice_type: voiceVal,
+                music_style: styleVal,
+                tempo: tempoVal,
+                language: languageVal,
+                story: storyVal,
+                referral_code: referralVal
+              },
+              groups: ["186959405673088216"]
+            })
           });
-        } catch(emailErr) {
-          console.log("EmailJS order confirmation error:", emailErr);
+        } catch(mlErr) {
+          console.log("MailerLite order error:", mlErr);
         }
         form.style.display = "none";
         document.getElementById("form-success").style.display = "block";
