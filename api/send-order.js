@@ -16,8 +16,8 @@ export default async function handler(req, res) {
       return res.status(400).json({ success: false, error: 'Email is required' });
     }
 
-    // Add subscriber to NisseMor Orders group → triggers MailerLite automation
-    const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
+    // 1️⃣ Add subscriber to NisseMor Orders group → triggers MailerLite confirmation email to client
+    const subscriberRes = await fetch('https://connect.mailerlite.com/api/subscribers', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,21 +27,50 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         email: body.email,
         fields: {
-          name: body.name || '',
-          last_name: '',
+          name:          body.name          || '',
+          last_name:     '',
+          package:       body.package       || '',
+          occasion:      body.occasion      || '',
+          delivery_time: body.delivery_time || '',
+          names:         body.names         || '',
+          voice_type:    body.voice_type    || '',
+          music_style:   body.music_style   || '',
+          tempo:         body.tempo         || '',
+          language:      body.language      || '',
+          story:         body.story         || ''
         },
-        groups: ['186960031518820181'] // ✅ NisseMor Orders
+        groups: ['186960031518820181'] // NisseMor Orders
       })
     });
 
-    const result = await response.json();
-    console.log('MailerLite result:', result);
+    const subscriberResult = await subscriberRes.json();
+    console.log('MailerLite subscriber result:', subscriberResult);
 
-    if (!response.ok) {
-      return res.status(500).json({ success: false, error: 'MailerLite failed', details: result });
+    if (!subscriberRes.ok) {
+      return res.status(500).json({ success: false, error: 'MailerLite failed', details: subscriberResult });
     }
 
-    return res.status(200).json({ success: true, result });
+    // 2️⃣ Send admin notification to yourself via Formspree
+    await fetch('https://formspree.io/f/xjgjrorb', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: `🎶 NEW ORDER from ${body.name || 'New Client'} — Nisse Mor`,
+        '👤 Name':     body.name          || '—',
+        '📧 Email':    body.email         || '—',
+        '📦 Package':  body.package       || '—',
+        '🎯 Occasion': body.occasion      || '—',
+        '🚚 Delivery': body.delivery_time || '—',
+        '👥 Names':    body.names         || '—',
+        '🎤 Voice':    body.voice_type    || '—',
+        '🎵 Style':    body.music_style   || '—',
+        '⏱ Tempo':    body.tempo         || '—',
+        '🌐 Language': body.language      || '—',
+        '📖 Story':    body.story         || '—'
+      })
+    });
+
+    return res.status(200).json({ success: true });
 
   } catch (err) {
     console.log('Error:', err.message);
