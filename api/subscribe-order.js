@@ -6,7 +6,8 @@ export default async function handler(req, res) {
 
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-    
+    console.log('subscribe-order body:', JSON.stringify(body));
+
     const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
       method: 'POST',
       headers: {
@@ -17,8 +18,10 @@ export default async function handler(req, res) {
       body: JSON.stringify(body)
     });
     const data = await response.json();
+    console.log('MailerLite response:', JSON.stringify(data));
     res.status(response.status).json(data);
   } catch(err) {
+    console.log('Error:', err.message);
     res.status(500).json({ error: err.message });
   }
 }
