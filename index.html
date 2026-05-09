@@ -1647,7 +1647,6 @@ function openStripeCheckout() {
 }
 
 function confirmPaymentDone() {
-  var submitBtn = document.getElementById("submit-order-btn");
   var notice = document.getElementById("payment-required-notice");
   var confirmBtn = document.getElementById("confirm-payment-btn");
 
@@ -1656,10 +1655,11 @@ function confirmPaymentDone() {
 
   confirmBtn.style.display = "none";
 
-  // Auto-submit the form
-  submitBtn.disabled = false;
-  submitBtn.style.opacity = "1";
-  submitBtn.click();
+  // Directly trigger the form submit event
+  const form = document.getElementById("order-form");
+  if (form) {
+    form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+  }
 }
 
 function closeStripeModal() {}
