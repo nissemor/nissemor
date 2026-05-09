@@ -1361,7 +1361,7 @@ async function mlSubscribe(email, fname, msgId, btn, btnText) {
     if (res.ok || res.status === 200 || res.status === 201) {
       msg.style.display = "block";
       msg.style.color = "#25d366";
-      msg.innerHTML = "🎶 You're in! Check your email for your <strong>WELCOME15</strong> 15% discount!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>WELCOME15</strong> de 15% de descuento.</em>";
+      msg.innerHTML = "🎶 You're in! Check your email for your <strong>WELCOME5</strong> $5 discount code!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>WELCOME5</strong> de $5 de descuento.</em>";
       btn.textContent = "✔ Subscribed!";
       btn.style.background = "rgba(37,211,102,.2)";
       btn.style.boxShadow = "none";
@@ -1530,7 +1530,7 @@ const PRICES = {
   "Family Story / Historia de Familia – $89 ✦": 89,
   "Forever Gift / Regalo Eterno – $149": 149
 };
-const DISCOUNT_CODES = { "WELCOME15": 15, "WELCOME5": 5, "AMIGA5": 5, "REFERRAL10": 10, "FIRSTSONG15": 15, "MOM15": 15 };
+const DISCOUNT_CODES = { "WELCOME5": 5, "AMIGA5": 5, "REFERRAL10": 10, "FIRSTSONG15": 15, "MOM15": 15 };
 let currentPrice = 0;
 let discountAmount = 0;
 
