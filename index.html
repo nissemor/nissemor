@@ -1640,6 +1640,14 @@ function openStripeCheckout() {
   var url = delivery === "rush" ? RUSH[pkg] : STANDARD[pkg];
   if (email) url = url + "?prefilled_email=" + encodeURIComponent(email);
   window.open(url, "_blank");
+
+  // Show "I completed my payment" button after Stripe opens
+  setTimeout(function() {
+    var confirmBtn = document.getElementById("confirm-payment-btn");
+    var notice = document.getElementById("payment-required-notice");
+    if (confirmBtn) confirmBtn.style.display = "block";
+    if (notice) notice.innerHTML = '<p style="color:#f4a0cc; font-size:.82rem; margin:0;">⏳ Complete your payment in the new tab, then click below · Completa tu pago en la nueva pestaña, luego haz clic abajo</p>';
+  }, 1500);
 }
 
 function confirmPaymentDone() {
