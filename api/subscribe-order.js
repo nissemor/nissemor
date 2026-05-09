@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         language: body.fields?.language || "",
         story: body.fields?.story || ""
       },
-      groups: body.groups || []
+groups: ["186959405673088216"]
     };
 
     console.log('Sending to MailerLite:', JSON.stringify(payload));
