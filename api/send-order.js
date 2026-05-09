@@ -1,4 +1,5 @@
 export default async function handler(req, res) {
+  console.log('send-order called', req.method);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
