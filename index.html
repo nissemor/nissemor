@@ -1334,29 +1334,22 @@ function seekDemo(audioId, progressId, event) {
 </section>
 
 <script>
-// ── MAILERLITE SUBSCRIBE ──
-// Group ID: 186952291471852571 (Nisse Mor Subscribers)
+// ── FORMSPREE SUBSCRIBE ──
 async function mlSubscribe(email, fname, msgId, btn, btnText) {
   const msg = document.getElementById(msgId);
   try {
-    const res = await fetch("/api/subscribe-order", {
+    const res = await fetch("https://formspree.io/f/xjgjrorb", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        
-      },
+      headers: { "Accept": "application/json", "Content-Type": "application/json" },
       body: JSON.stringify({
+        _subject: "💌 New Subscriber — Nisse Mor",
         email: email,
-        fields: { name: fname || "" },
-        groups: ["186952291471852571"]
+        name: fname || "",
+        source: "Website Subscriber"
       })
     });
 
-    const data = await res.json();
-
-    // 200 = new subscriber, 201 = updated existing — both are success
-    if (res.ok || res.status === 200 || res.status === 201) {
+    if (res.ok) {
       msg.style.display = "block";
       msg.style.color = "#25d366";
       msg.innerHTML = "🎶 You're in! Check your email for your <strong>WELCOME5</strong> $5 discount code!<br/><em style='color:rgba(200,168,188,.7);font-size:.85em;'>¡Listo! Revisa tu correo para el código <strong>WELCOME5</strong> de $5 de descuento.</em>";
@@ -1366,11 +1359,10 @@ async function mlSubscribe(email, fname, msgId, btn, btnText) {
       localStorage.setItem("nm_subscribed", "1");
       setTimeout(() => closeNewsletter(), 3000);
     } else {
-      throw new Error(data.message || "Error");
+      throw new Error("Error");
     }
 
   } catch(err) {
-    console.error("MailerLite error:", err);
     msg.style.display = "block";
     msg.style.color = "#f4a0cc";
     msg.innerHTML = "Something went wrong. Please try again. · Algo salió mal. Intenta de nuevo.";
@@ -1386,7 +1378,7 @@ document.getElementById("mc-popup-form").addEventListener("submit", async functi
   const fname = document.getElementById("mc-fname").value;
   const btn = this.querySelector("button");
   btn.textContent = "Subscribing…"; btn.disabled = true;
-  mlSubscribe(email, fname, "mc-popup-msg", btn, "✦ Get My 15% Discount · Obtener 15% de Descuento");
+  mlSubscribe(email, fname, "mc-popup-msg", btn, "✦ Get My $5 Discount · Obtener $5 de Descuento");
 });
 
 // Banner form
