@@ -942,8 +942,8 @@ window.addEventListener("error", function(e) {
         <p class="checkout-urgency">Limited spots available this week — production starts immediately after purchase · Cupos limitados esta semana — la producción comienza inmediatamente después de la compra</p>
 
         <!-- After payment confirm -->
-        <button id="confirm-payment-btn" type="button" onclick="confirmPaymentDone()" style="display:none; width:100%; margin-top:10px; padding:13px; border-radius:30px; background:rgba(37,211,102,.15); border:1px solid rgba(37,211,102,.4); color:#25d366; font-family:'Jost',sans-serif; font-size:.85rem; cursor:pointer;">
-          ✔ I completed my payment · Ya completé mi pago
+        <button id="confirm-payment-btn" type="button" onclick="confirmPaymentDone()" style="display:none; width:100%; margin-top:10px; padding:15px; border-radius:30px; background:linear-gradient(135deg,#ff50a8,#e060a0); border:none; color:#fff; font-family:'Jost',sans-serif; font-size:.88rem; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; box-shadow:0 0 28px rgba(255,80,168,.4);">
+          ✦ Payment Done — Send My Order · Pago Listo — Enviar Mi Pedido
         </button>
       </div>
       <button type="submit" id="submit-order-btn" class="btn-primary form-submit" disabled style="opacity:0; cursor:not-allowed; height:0; padding:0; margin:0; overflow:hidden; border:none;">
@@ -1338,7 +1338,7 @@ function seekDemo(audioId, progressId, event) {
 async function mlSubscribe(email, fname, msgId, btn, btnText) {
   const msg = document.getElementById(msgId);
   try {
-    const res = await fetch("https://formspree.io/f/xjgjrorb", {
+    const res = await fetch("https://formspree.io/f/mbdqykpv", {
       method: "POST",
       headers: { "Accept": "application/json", "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -1633,6 +1633,7 @@ function openStripeCheckout() {
   if (!email) { alert("Please enter your email. · Por favor escribe tu correo."); return; }
   var url = delivery === "rush" ? RUSH[pkg] : STANDARD[pkg];
   if (email) url = url + "?prefilled_email=" + encodeURIComponent(email);
+  url = url + (url.includes("?") ? "&" : "?") + "success_url=" + encodeURIComponent("https://nissemor.com/?paid=1");
   window.open(url, "_blank");
 
   // Show "I completed my payment" button after Stripe opens
