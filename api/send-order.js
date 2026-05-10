@@ -2,78 +2,45 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
   if (req.method === 'OPTIONS') return res.status(200).end();
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
 
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    console.log('send-order called', req.method);
 
-    if (!body.email) {
-      return res.status(400).json({ success: false, error: 'Email is required' });
-    }
-
-    // 1️⃣ Add subscriber to NisseMor Orders group → triggers MailerLite confirmation email to client
-    const subscriberRes = await fetch('https://connect.mailerlite.com/api/subscribers', {
+    const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${process.env.MAILERLITE_API_KEY}`
+        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`
       },
       body: JSON.stringify({
-        email: body.email,
-        fields: {
-          name:          body.name          || '',
-          last_name:     '',
-          package:       body.package       || '',
-          occasion:      body.occasion      || '',
-          delivery_time: body.delivery_time || '',
-          names:         body.names         || '',
-          voice_type:    body.voice_type    || '',
-          music_style:   body.music_style   || '',
-          tempo:         body.tempo         || '',
-          language:      body.language      || '',
-          story:         body.story         || ''
-        },
-        groups: ['187015975721240041'] // NisseMor Orders
+        from: 'onboarding@resend.dev',
+        to: ['official.nissemor@gmail.com'],
+        subject: `🎶 New Order from ${body.name}!`,
+        html: `
+          <div style="font-family:Arial,sans-serif;max-width:600px;background:#0d0b0f;color:#fff;padding:32px;border-radius:12px;">
+            <h2 style="color:#e060a0;">🎶 New Nisse Mor Order!</h2>
+            <p><strong>Name:</strong> ${body.name}</p>
+            <p><strong>Email:</strong> ${body.email}</p>
+            <p><strong>Package:</strong> ${body.package}</p>
+            <p><strong>Occasion:</strong> ${body.occasion}</p>
+            <p><strong>Delivery:</strong> ${body.delivery_time}</p>
+            <p><strong>Names:</strong> ${body.names}</p>
+            <p><strong>Voice:</strong> ${body.voice_type}</p>
+            <p><strong>Style:</strong> ${body.music_style}</p>
+            <p><strong>Tempo:</strong> ${body.tempo}</p>
+            <p><strong>Language:</strong> ${body.language}</p>
+            <p><strong>Story:</strong> ${body.story}</p>
+          </div>
+        `
       })
     });
 
-    const subscriberResult = await subscriberRes.json();
-    console.log('MailerLite subscriber result:', subscriberResult);
-
-    if (!subscriberRes.ok) {
-      return res.status(500).json({ success: false, error: 'MailerLite failed', details: subscriberResult });
-    }
-
-    // 2️⃣ Send admin notification to yourself via Formspree
-    await fetch('https://formspree.io/f/xjgjrorb', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        _subject: `🎶 NEW ORDER from ${body.name || 'New Client'} — Nisse Mor`,
-        '👤 Name':     body.name          || '—',
-        '📧 Email':    body.email         || '—',
-        '📦 Package':  body.package       || '—',
-        '🎯 Occasion': body.occasion      || '—',
-        '🚚 Delivery': body.delivery_time || '—',
-        '👥 Names':    body.names         || '—',
-        '🎤 Voice':    body.voice_type    || '—',
-        '🎵 Style':    body.music_style   || '—',
-        '⏱ Tempo':    body.tempo         || '—',
-        '🌐 Language': body.language      || '—',
-        '📖 Story':    body.story         || '—'
-      })
-    });
-
-    return res.status(200).json({ success: true });
-
-  } catch (err) {
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch(err) {
     console.log('Error:', err.message);
-    return res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({ error: err.message });
   }
 }
