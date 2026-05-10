@@ -13,23 +13,29 @@ export default async function handler(req, res) {
     if (!body.email) {
       return res.status(400).json({ success: false, error: 'Email is required' });
     }
-    const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
+
+    const groupId = body.groups?.[0] || '186952291471852571';
+    const apiKey = process.env.MAILERLITE_API_KEY;
+
+    // Step 1: Add subscriber to group directly via group endpoint
+    const response = await fetch(`https://connect.mailerlite.com/api/groups/${groupId}/subscribers`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': `Bearer ${process.env.MAILERLITE_API_KEY}`
+        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
         email: body.email,
         fields: {
           name: body.fields?.name || body.name || ''
-        },
-        groups: [body.groups?.[0] || '186952291471852571']
+        }
       })
     });
+
     const result = await response.json();
     console.log('MailerLite response:', result);
+
     if (!response.ok) {
       return res.status(response.status).json({
         success: false,
