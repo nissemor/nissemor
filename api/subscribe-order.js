@@ -25,7 +25,7 @@ export default async function handler(req, res) {
         fields: {
           name: body.fields?.name || body.name || ''
         },
-        groups: ['186957779959810019']
+        groups: ['186952291471852571']
       })
     });
     const result = await response.json();
