@@ -3,6 +3,7 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
+
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
     console.log('send-order called', req.method);
@@ -90,8 +91,41 @@ export default async function handler(req, res) {
       })
     });
 
+    // 3) Add contact to Brevo — Orders list #7
+    const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': process.env.BREVO_API_KEY
+      },
+      body: JSON.stringify({
+        email: body.email,
+        attributes: {
+          FIRSTNAME: body.name,
+          PACKAGE: body.package,
+          OCCASION: body.occasion,
+          DELIVERY: body.delivery_time,
+          NAMES: body.names,
+          VOICETYPE: body.voice_type,
+          MUSICSTYLE: body.music_style,
+          TEMPO: body.tempo,
+          LANGUAGE: body.language,
+          STORY: body.story
+        },
+        listIds: [Number(process.env.BREVO_ORDERS_LIST_ID || 7)],
+        updateEnabled: true
+      })
+    });
+
+    if (!brevoRes.ok) {
+      const brevoErr = await brevoRes.json();
+      console.error('Brevo error:', brevoErr);
+      // No bloqueamos la respuesta — los emails ya se enviaron
+    }
+
     res.status(200).json({ ok: true });
-  } catch(err) {
+
+  } catch (err) {
     console.log('Error:', err.message);
     res.status(500).json({ error: err.message });
   }
