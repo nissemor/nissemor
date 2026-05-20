@@ -493,6 +493,7 @@ window.addEventListener("error", function(e) {
     <a href="#about-me">About / Nosotros</a>
     <a href="#faq">FAQ</a>
     <a href="#demos">Listen 🎵</a>
+    <a href="#mi-cancion">🎤 Mi Canción</a>
     <a href="#testimonials">Reviews</a>
     <a href="#order">Order / Pedir</a>
     <a href="#contact">Contact / Contacto</a>
@@ -970,6 +971,112 @@ window.addEventListener("error", function(e) {
 </section>
 
 
+
+<!-- ── MI CANCIÓN SECTION ── -->
+<section id="mi-cancion" style="background: var(--black); padding: 90px 24px; overflow: hidden; position: relative;">
+
+  <!-- Background glow -->
+  <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:600px; height:600px; background:radial-gradient(circle, rgba(224,96,160,.13) 0%, transparent 70%); pointer-events:none;"></div>
+
+  <div class="container" style="position:relative; z-index:1;">
+
+    <!-- Header -->
+    <div style="text-align:center; margin-bottom:52px;">
+      <span class="section-eyebrow">🎤 Out Now · Ya Disponible</span>
+      <h2 class="section-title">Listen to my <em>original song</em></h2>
+      <p style="font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--pink-light); font-size:1.15rem; margin-top:4px;">Escucha mi canción original</p>
+      <p class="section-subtitle" style="max-width:520px; margin:10px auto 0;">The same heart that creates your personalized songs — now in an original track, available on all platforms. · El mismo corazón que crea tus canciones personalizadas — ahora en una canción original, disponible en todas las plataformas.</p>
+    </div>
+
+    <!-- Song Card -->
+    <div style="max-width:680px; margin:0 auto; border:1px solid rgba(224,96,160,.3); border-radius:28px; overflow:hidden; background:linear-gradient(160deg, rgba(224,96,160,.1) 0%, rgba(13,11,15,0.6) 100%); box-shadow: 0 0 60px rgba(224,96,160,.15);">
+
+      <!-- Top: Album art + info -->
+      <div style="display:flex; align-items:center; gap:28px; padding:32px 32px 24px; flex-wrap:wrap;">
+        <!-- Album Art -->
+        <div style="position:relative; flex-shrink:0;">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/88/56/45/8856454e-24e0-8be7-2b18-8f4eb094e9e9/artwork.jpg/512x512bb.jpg"
+               alt="Ella No Regresó Igual - Nisse Mor"
+               style="width:140px; height:140px; border-radius:16px; object-fit:cover; box-shadow:0 8px 32px rgba(224,96,160,.4); display:block;">
+          <!-- Animated ring -->
+          <div style="position:absolute; inset:-6px; border-radius:22px; border:1px solid rgba(224,96,160,.35); animation:pulse 3s ease-in-out infinite; pointer-events:none;"></div>
+        </div>
+
+        <!-- Song Info -->
+        <div style="flex:1; min-width:200px;">
+          <p style="font-size:.7rem; letter-spacing:.22em; text-transform:uppercase; color:var(--pink); margin-bottom:8px;">New Release · Nuevo Lanzamiento</p>
+          <h3 style="font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,4vw,2.1rem); font-weight:400; color:#fff; line-height:1.15; margin-bottom:6px;">Ella No Regresó Igual</h3>
+          <p style="font-size:.95rem; color:var(--muted); margin-bottom:16px; letter-spacing:.05em;">Nisse Mor</p>
+
+          <!-- Listen everywhere button -->
+          <a href="https://song.link/nissemor" target="_blank" rel="noopener"
+             style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,var(--pink-glow),var(--pink)); color:#fff; text-decoration:none; padding:11px 26px; border-radius:24px; font-family:'Jost',sans-serif; font-size:.82rem; letter-spacing:.1em; text-transform:uppercase; font-weight:500; box-shadow:0 0 28px rgba(255,80,168,.4); transition:all .3s;"
+             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 44px rgba(255,80,168,.6)';"
+             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 28px rgba(255,80,168,.4)';">
+            ▶ Listen on All Platforms · Escuchar
+          </a>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div style="height:1px; background:linear-gradient(90deg, transparent, rgba(224,96,160,.3), transparent); margin:0 32px;"></div>
+
+      <!-- Platform links -->
+      <div style="padding:24px 32px 32px;">
+        <p style="font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:16px; text-align:center;">Available on · Disponible en</p>
+        <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
+
+          <!-- Spotify -->
+          <a href="https://open.spotify.com/track/1XvsApBmK87ioYUiWECVju" target="_blank" rel="noopener"
+             style="display:inline-flex; align-items:center; gap:7px; padding:9px 18px; border-radius:20px; border:1px solid rgba(30,215,96,.3); background:rgba(30,215,96,.08); color:#1ed760; text-decoration:none; font-family:'Jost',sans-serif; font-size:.8rem; font-weight:500; letter-spacing:.06em; transition:all .3s;"
+             onmouseover="this.style.background='rgba(30,215,96,.18)'; this.style.borderColor='rgba(30,215,96,.7)';"
+             onmouseout="this.style.background='rgba(30,215,96,.08)'; this.style.borderColor='rgba(30,215,96,.3)';">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            Spotify
+          </a>
+
+          <!-- Apple Music -->
+          <a href="https://geo.music.apple.com/us/album/_/6770282699?i=6770282700&mt=1&app=music" target="_blank" rel="noopener"
+             style="display:inline-flex; align-items:center; gap:7px; padding:9px 18px; border-radius:20px; border:1px solid rgba(252,60,68,.3); background:rgba(252,60,68,.08); color:#fc3c44; text-decoration:none; font-family:'Jost',sans-serif; font-size:.8rem; font-weight:500; letter-spacing:.06em; transition:all .3s;"
+             onmouseover="this.style.background='rgba(252,60,68,.18)'; this.style.borderColor='rgba(252,60,68,.7)';"
+             onmouseout="this.style.background='rgba(252,60,68,.08)'; this.style.borderColor='rgba(252,60,68,.3)';">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043a5.022 5.022 0 00-1.877-.726 10.496 10.496 0 00-1.564-.15c-.05-.003-.096-.01-.145-.013H5.999c-.05.003-.096.01-.145.013-.527.025-1.055.075-1.564.15a5.022 5.022 0 00-1.877.726C1.308 1.624.563 2.624.246 3.934A9.23 9.23 0 00.006 6.124C0 6.227 0 6.33 0 6.435v11.13c0 .105 0 .208.006.311.034 1.184.34 2.3 1.02 3.265.68.966 1.62 1.62 2.73 1.92a8.1 8.1 0 001.744.27c.527.025 1.055.04 1.583.04h9.834c.528 0 1.056-.015 1.583-.04a8.1 8.1 0 001.744-.27c1.11-.3 2.05-.954 2.73-1.92.68-.965.986-2.081 1.02-3.265C24 17.873 24 17.77 24 17.665V6.435c0-.105 0-.208-.006-.311zM17.99 9.86l-5.522 3.224a.47.47 0 01-.468 0L6.478 9.86a.47.47 0 010-.812l5.522-3.224a.47.47 0 01.468 0l5.522 3.224a.47.47 0 010 .812z"/></svg>
+            Apple Music
+          </a>
+
+          <!-- YouTube -->
+          <a href="https://youtu.be/5GkXs-2LBE0" target="_blank" rel="noopener"
+             style="display:inline-flex; align-items:center; gap:7px; padding:9px 18px; border-radius:20px; border:1px solid rgba(255,0,0,.3); background:rgba(255,0,0,.08); color:#ff4444; text-decoration:none; font-family:'Jost',sans-serif; font-size:.8rem; font-weight:500; letter-spacing:.06em; transition:all .3s;"
+             onmouseover="this.style.background='rgba(255,0,0,.18)'; this.style.borderColor='rgba(255,0,0,.7)';"
+             onmouseout="this.style.background='rgba(255,0,0,.08)'; this.style.borderColor='rgba(255,0,0,.3)';">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+            YouTube
+          </a>
+
+          <!-- TIDAL -->
+          <a href="https://listen.tidal.com/track/525542685" target="_blank" rel="noopener"
+             style="display:inline-flex; align-items:center; gap:7px; padding:9px 18px; border-radius:20px; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.05); color:#fff; text-decoration:none; font-family:'Jost',sans-serif; font-size:.8rem; font-weight:500; letter-spacing:.06em; transition:all .3s;"
+             onmouseover="this.style.background='rgba(255,255,255,.12)'; this.style.borderColor='rgba(255,255,255,.5)';"
+             onmouseout="this.style.background='rgba(255,255,255,.05)'; this.style.borderColor='rgba(255,255,255,.2)';">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.012 3.992L8.008 7.996 4.004 3.992 0 7.996l4.004 4.004 4.004-4.004 4.004 4.004 4.004-4.004zM8.008 16.004l-4.004-4.004L0 16.004 4.004 20.008zM16.016 12l-4.004 4.004 4.004 4.004L20.02 16.004zM20.02 3.992l-4.004 4.004 4.004 4.004L24.024 7.996z"/></svg>
+            TIDAL
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA below -->
+    <p style="text-align:center; margin-top:32px; font-size:.88rem; color:var(--muted); line-height:1.7;">
+      💕 If this song moves you, imagine one made just for <em style="color:var(--pink-light);">your</em> story.<br/>
+      <span style="font-size:.82rem; color:rgba(200,168,188,.55);">Si esta canción te llega al corazón, imagina una hecha solo para tu historia.</span>
+    </p>
+    <div style="text-align:center; margin-top:18px;">
+      <a href="#order" class="btn-primary" style="font-size:.82rem; padding:13px 36px;">✦ Create My Personalized Song · Crear Mi Canción</a>
+    </div>
+
+  </div>
+</section>
 
 <!-- FAQ -->
 <section id="faq" style="background: var(--deep); padding: 90px 24px;">
