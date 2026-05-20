@@ -371,7 +371,7 @@ footer .copy { font-size: .73rem; margin-top: 24px; color: rgba(200,168,188,.4);
   #checkout-box { padding:18px 14px; }
 }
 
-#policy-check, #stripe-pay-btn, #confirm-payment-btn {
+#policy-check, #stripe-pay-btn {
   position: relative !important;
   z-index: 9999 !important;
   pointer-events: auto !important;
@@ -910,7 +910,7 @@ window.addEventListener("error", function(e) {
       <!-- Payment Section -->
       <div id="checkout-box" style="margin-bottom:28px; padding:24px; border:1px solid rgba(224,96,160,.25); border-radius:16px; background:rgba(224,96,160,.04);">
         <label style="display:block; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:#fff; font-weight:400; margin-bottom:16px;">
-          💳 Step 1: Pay · Paso 1: Pagar
+          💳 Secure Payment · Pago Seguro
         </label>
 
         <!-- Price Summary -->
@@ -940,24 +940,17 @@ window.addEventListener("error", function(e) {
           </label>
         </div>
 
-        <!-- Pay Button (disabled until checkbox checked) -->
-        <button id="stripe-pay-btn" type="button" onclick="openStripeCheckout()" disabled style="display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:16px; border-radius:30px; background:linear-gradient(135deg,#6772e5,#9b59b6); color:#fff; border:none; cursor:not-allowed; font-family:'Jost',sans-serif; font-size:.9rem; letter-spacing:.08em; font-weight:500; box-shadow:0 4px 20px rgba(103,114,229,.4); opacity:.45;">
-          🔒 <span id="stripe-btn-text">Pay securely with Stripe · Paga seguro con Stripe</span>
+        <!-- Single Pay + Submit Button -->
+        <button id="stripe-pay-btn" type="button" onclick="payAndSubmit()" disabled style="display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:16px; border-radius:30px; background:linear-gradient(135deg,#6772e5,#9b59b6); color:#fff; border:none; cursor:not-allowed; font-family:'Jost',sans-serif; font-size:.9rem; letter-spacing:.08em; font-weight:500; box-shadow:0 4px 20px rgba(103,114,229,.4); opacity:.45; transition:all .3s;">
+          🔒 <span id="stripe-btn-text">Complete Order &amp; Pay · Completar Pedido y Pagar</span>
         </button>
 
-        <p class="checkout-secure-line">Secure checkout • Multiple payment options available · Pago seguro • Múltiples opciones de pago disponibles</p>
+        <p class="checkout-secure-line">One click — your order is sent &amp; payment opens instantly · Un clic — tu pedido se envía y el pago abre al instante</p>
 
         <p class="checkout-urgency">Limited spots available this week — production starts immediately after purchase · Cupos limitados esta semana — la producción comienza inmediatamente después de la compra</p>
 
-        <!-- After payment confirm -->
-        <button id="confirm-payment-btn" type="button" onclick="confirmPaymentDone()" style="display:none; width:100%; margin-top:10px; padding:15px; border-radius:30px; background:linear-gradient(135deg,#ff50a8,#e060a0); border:none; color:#fff; font-family:'Jost',sans-serif; font-size:.88rem; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; box-shadow:0 0 28px rgba(255,80,168,.4);">
-          ✦ Payment Done — Send My Order · Pago Listo — Enviar Mi Pedido
-        </button>
+        <p id="payment-required-notice" style="text-align:center; font-size:.78rem; color:rgba(255,150,150,.8); margin-top:8px; display:none;"></p>
       </div>
-      <button type="submit" id="submit-order-btn" class="btn-primary form-submit" disabled style="opacity:0; cursor:not-allowed; height:0; padding:0; margin:0; overflow:hidden; border:none;">
-        Step 2: Send My Order · Paso 2: Enviar Mi Pedido
-      </button>
-      <p id="payment-required-notice" style="text-align:center; font-size:.78rem; color:rgba(255,150,150,.8); margin-top:8px;">⚠️ Please complete payment above first · Por favor completa el pago arriba primero</p>
       <p class="form-note">
         We'll confirm within 24 hours · Confirmamos en 24 horas<br/>
         Questions? / ¿Preguntas? <a href="mailto:info@nissemor.com">info@nissemor.com</a>
@@ -1608,7 +1601,7 @@ function updatePriceSummary() {
   const displayPrice = currentPrice > 0 ? currentPrice + rushExtra : 0;
   if (stripeBtnText) {
     if (displayPrice > 0) {
-      stripeBtnText.textContent = "Step 1: Choose & Pay $" + displayPrice + (isRush ? " ⚡ Rush" : "") + " · Paso 1: Pagar $" + displayPrice;
+    stripeBtnText.textContent = "Complete Order & Pay $" + displayPrice + (isRush ? " ⚡ Rush" : "") + " · Completar y Pagar $" + displayPrice;
     } else {
       stripeBtnText.textContent = "Step 1: Choose & Pay · Paso 1: Elige y Paga";
     }
@@ -1618,7 +1611,7 @@ function updatePriceSummary() {
     priceFinal.textContent = "—";
     priceOriginal.style.display = "none";
     if (discountLabel) discountLabel.style.display = "none";
-    if (stripeBtnText) stripeBtnText.textContent = "Select a package to pay · Selecciona un paquete";
+    if (stripeBtnText) stripeBtnText.textContent = "Complete Order & Pay · Completar Pedido y Pagar";
   }
 }
 
@@ -1660,7 +1653,7 @@ function toggleStripeBtn() {
   }
 }
 
-function openStripeCheckout() {
+function payAndSubmit() {
   const STANDARD = {
     "Sweet Melody / Melodía Dulce – $49": "https://buy.stripe.com/3cI9AUfqvf8Vghwe2yew801",
     "Family Story / Historia de Familia – $89 ✦": "https://buy.stripe.com/28E5kEfqv6CpaXcbUqew802",
@@ -1671,45 +1664,89 @@ function openStripeCheckout() {
     "Family Story / Historia de Familia – $89 ✦": "https://buy.stripe.com/eVqfZidinbWJ7L04rYew806",
     "Forever Gift / Regalo Eterno – $149": "https://buy.stripe.com/4gM4gA0vBbWJd5k2jQew807"
   };
+
+  var form = document.getElementById("order-form");
   var pkg = document.querySelector('select[name="package"]').value;
   var email = document.querySelector('input[name="email"]').value;
   var name = document.querySelector('input[name="name"]').value;
+  var occasion = document.querySelector('input[name="occasion"]').value;
+  var story = document.querySelector('textarea[name="story"]').value;
   var delivery = document.querySelector('select[name="delivery_time"]') ? document.querySelector('select[name="delivery_time"]').value : "standard";
-  if (!pkg || !STANDARD[pkg]) { 
-    alert("Please select a package above first.\nPor favor selecciona un paquete arriba primero.");
-    document.getElementById("packages").scrollIntoView({behavior:"smooth"});
-    return; 
-  }
+
+  // Validate required fields
   if (!name) { alert("Please enter your name. · Por favor escribe tu nombre."); return; }
   if (!email) { alert("Please enter your email. · Por favor escribe tu correo."); return; }
+  if (!pkg || !STANDARD[pkg]) {
+    alert("Please select a package. · Por favor selecciona un paquete.");
+    document.getElementById("packages").scrollIntoView({behavior:"smooth"});
+    return;
+  }
+  if (!occasion) { alert("Please enter the occasion. · Por favor escribe la ocasión."); return; }
+  if (!story) { alert("Please share your story. · Por favor comparte tu historia."); return; }
+
+  // Disable button to prevent double-click
+  var btn = document.getElementById("stripe-pay-btn");
+  btn.disabled = true;
+  btn.style.opacity = ".7";
+  document.getElementById("stripe-btn-text").textContent = "Sending & opening payment… · Enviando y abriendo pago…";
+
+  // Build Stripe URL
   var url = delivery === "rush" ? RUSH[pkg] : STANDARD[pkg];
-  if (email) url = url + "?prefilled_email=" + encodeURIComponent(email);
-  url = url + (url.includes("?") ? "&" : "?") + "success_url=" + encodeURIComponent("https://nissemor.com/?paid=1");
+  if (email) url += "?prefilled_email=" + encodeURIComponent(email);
+  url += (url.includes("?") ? "&" : "?") + "success_url=" + encodeURIComponent("https://nissemor.com/?paid=1");
+
+  // Open Stripe immediately (must be synchronous to avoid popup blocker)
   window.open(url, "_blank");
 
-  // Show "I completed my payment" button after Stripe opens
+  // Submit the order form in the background
+  (async function() {
+    try {
+      const nameVal = form.querySelector('input[name="name"]')?.value || "";
+      const emailVal = form.querySelector('input[name="email"]')?.value || "";
+      const pkgVal = form.querySelector('select[name="package"]')?.value || "";
+      const occasionVal = form.querySelector('input[name="occasion"]')?.value || "";
+      const deliveryVal = form.querySelector('select[name="delivery_time"]')?.value || "";
+      const namesVal = form.querySelector('input[name="names"]')?.value || "";
+      const voiceVal = form.querySelector('select[name="voice_type"]')?.value || "";
+      const styleVal = form.querySelector('select[name="music_style"]')?.value || "";
+      const tempoVal = form.querySelector('select[name="tempo"]')?.value || "";
+      const languageVal = form.querySelector('select[name="language"]')?.value || "";
+      const storyVal = form.querySelector('textarea[name="story"]')?.value || "";
+
+      await fetch("/api/send-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          name: nameVal, email: emailVal, package: pkgVal,
+          occasion: occasionVal, delivery_time: deliveryVal,
+          names: namesVal, voice_type: voiceVal, music_style: styleVal,
+          tempo: tempoVal, language: languageVal, story: storyVal
+        })
+      });
+
+      // Also add to MailerLite
+      try {
+        await fetch("/api/subscribe-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            email: emailVal,
+            fields: { name: nameVal, package: pkgVal, occasion: occasionVal, delivery_time: deliveryVal, names: namesVal, voice_type: voiceVal, music_style: styleVal, tempo: tempoVal, language: languageVal, story: storyVal },
+            groups: ["186960031518820181"]
+          })
+        });
+      } catch(mlErr) { console.log("MailerLite order error:", mlErr); }
+
+    } catch(err) {
+      console.log("Order submission error:", err);
+    }
+  })();
+
+  // Show success state on the page immediately — payment is opening in new tab
   setTimeout(function() {
-    var confirmBtn = document.getElementById("confirm-payment-btn");
-    var notice = document.getElementById("payment-required-notice");
-    if (confirmBtn) confirmBtn.style.display = "block";
-    if (notice) notice.innerHTML = '<p style="color:#f4a0cc; font-size:.82rem; margin:0;">⏳ Complete your payment in the new tab, then click below · Completa tu pago en la nueva pestaña, luego haz clic abajo</p>';
-  }, 1500);
-}
-
-function confirmPaymentDone() {
-  var notice = document.getElementById("payment-required-notice");
-  var confirmBtn = document.getElementById("confirm-payment-btn");
-
-  notice.innerHTML = '<p style="color:#25d366; font-size:.82rem; margin:0;">✅ Payment confirmed! Sending your order automatically...</p>' +
-    '<p style="color:rgba(37,211,102,.7); font-size:.78rem; font-style:italic; margin:4px 0 0;">¡Pago confirmado! Enviando tu pedido automáticamente...</p>';
-
-  confirmBtn.style.display = "none";
-
-  // Directly trigger the form submit event
-  const form = document.getElementById("order-form");
-  if (form) {
-    form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-  }
+    form.style.display = "none";
+    document.getElementById("form-success").style.display = "block";
+  }, 800);
 }
 
 function closeStripeModal() {}
@@ -1753,80 +1790,7 @@ document.addEventListener("change", function(e) {
   if (e.target.id === "referral-input") updatePriceSummary();
 });
 
-// Form submission with Resend
-const form = document.getElementById("order-form");
-if (form) {
-  form.addEventListener("submit", async function(e) {
-    e.preventDefault();
-    const btn = form.querySelector("button[type=submit]");
-    btn.textContent = "Sending… · Enviando…";
-    btn.disabled = true;
-    try {
-      const nameVal = form.querySelector('input[name="name"]')?.value || "";
-      const emailVal = form.querySelector('input[name="email"]')?.value || "";
-      const pkgVal = form.querySelector('select[name="package"]')?.value || "";
-      const occasionVal = form.querySelector('input[name="occasion"]')?.value || "";
-      const deliveryVal = form.querySelector('select[name="delivery_time"]')?.value || "";
-      const namesVal = form.querySelector('input[name="names"]')?.value || "";
-      const voiceVal = form.querySelector('select[name="voice_type"]')?.value || "";
-      const styleVal = form.querySelector('select[name="music_style"]')?.value || "";
-      const tempoVal = form.querySelector('select[name="tempo"]')?.value || "";
-      const languageVal = form.querySelector('select[name="language"]')?.value || "";
-      const storyVal = form.querySelector('textarea[name="story"]')?.value || "";
-
-      const res = await fetch("/api/send-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({
-          name: nameVal, email: emailVal, package: pkgVal,
-          occasion: occasionVal, delivery_time: deliveryVal,
-          names: namesVal, voice_type: voiceVal, music_style: styleVal,
-          tempo: tempoVal, language: languageVal, story: storyVal
-        })
-      });
-      if (res.ok) {
-        try {
-          await fetch("/api/subscribe-order", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json",
-              
-            },
-            body: JSON.stringify({
-              email: emailVal,
-              fields: {
-                name: nameVal,
-                package: pkgVal,
-                occasion: occasionVal,
-                delivery_time: deliveryVal,
-                names: namesVal,
-                voice_type: voiceVal,
-                music_style: styleVal,
-                tempo: tempoVal,
-                language: languageVal,
-                story: storyVal
-              },
-              groups: ["186960031518820181"]
-            })
-          });
-        } catch(mlErr) {
-          console.log("MailerLite order error:", mlErr);
-        }
-        form.style.display = "none";
-        document.getElementById("form-success").style.display = "block";
-      } else {
-        btn.textContent = "✦ Send My Order · Enviar Mi Pedido";
-        btn.disabled = false;
-        alert("Something went wrong. Please email us at info@nissemor.com · Algo salió mal. Por favor escríbenos.");
-      }
-    } catch(err) {
-      btn.textContent = "✦ Send My Order · Enviar Mi Pedido";
-      btn.disabled = false;
-      alert("Connection error. Please try again. · Error de conexión. Intenta de nuevo.");
-    }
-  });
-}
+// Form submission is now handled by payAndSubmit() above
 </script>
 <script>
 function openModal(id) {
